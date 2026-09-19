@@ -43,6 +43,7 @@
     <a href="#terminal" class="hoverable bg-white text-black px-3 py-2 border-2 border-black brutal jitter">TERMINAL</a>
     <a href="#stack" class="hoverable bg-[#FF00E5] text-black px-3 py-2 border-2 border-black brutal jitter">STACK</a>
     <a href="#projects" class="hoverable bg-[#00F0FF] text-black px-3 py-2 border-2 border-black brutal jitter">WORKS</a>
+    <a href="#signal" class="hoverable bg-black text-[#CCFF00] px-3 py-2 border-2 border-[#CCFF00] jitter">SIGNAL</a>
   </div>
   <div class="flex gap-2">
     <button id="soundBtn" class="hoverable bg-black text-[#CCFF00] border-2 border-[#CCFF00] px-3 py-2 text-xs font-bold">SOUND:OFF</button>
@@ -188,6 +189,28 @@
     <a href="https://github.com/h1chan/h1chan" target="_blank" rel="noopener" class="hoverable bg-white text-black px-3 py-2 text-sm font-black border-2 border-[#CCFF00] jitter">h1chan/h1chan — profile README ★ typing-SVG + streak</a>
     <span class="text-xs text-white/60 font-bold hidden md:inline">static.io — Telegram bot for remote PC control (Python, private) • saas — in the oven</span>
     <button id="spawnBtn" class="hoverable ml-auto bg-[#CCFF00] text-black px-4 py-2 font-black border-2 border-[#CCFF00] jitter">+ SPAWN CLONE</button>
+  </div>
+</section>
+
+<section id="signal" class="relative bg-black border-y-4 border-[#CCFF00] px-5 md:px-12 py-20 overflow-hidden">
+  <div class="ghost-num" style="color:#CCFF00">05</div>
+  <div class="max-w-6xl mx-auto relative">
+    <p class="reveal text-xs tracking-[.4em] text-[#CCFF00] font-bold">05 // LIVE FEED</p>
+    <h2 class="reveal font-display text-5xl md:text-8xl mt-3">SIGNAL <span class="outline-white">FROM GITHUB</span></h2>
+    <p class="reveal text-white/60 text-sm mt-3 max-w-xl">Real data, pulled live from the GitHub API on every page load. If the API sleeps — cached intel takes over. No mockups.</p>
+    <div class="mt-8 grid md:grid-cols-2 gap-6 items-start">
+      <div class="reveal brutal bg-[#0a0a0a] p-0 overflow-hidden card-3d" style="border:3px solid #fff;box-shadow:8px 8px 0 #CCFF00">
+        <div class="flex items-center gap-2 px-4 py-2 bg-black border-b-2 border-white/15 text-xs">
+          <span class="w-2.5 h-2.5 rounded-full bg-[#CCFF00] inline-block hint-pulse"></span>
+          <span class="text-white/60">h1chan@kz:~/signal — streaming</span>
+          <span id="signal-status" class="ml-auto text-[#CCFF00] font-bold">● SYNC</span>
+        </div>
+        <div id="signal-log" class="p-5 text-xs md:text-sm leading-relaxed h-[320px] overflow-hidden"></div>
+      </div>
+      <div class="flex flex-col gap-3" id="signal-repos">
+        <div class="text-xs text-white/40 tracking-[.3em] font-bold">REPOS // SORTED BY LAST PUSH</div>
+      </div>
+    </div>
   </div>
 </section>
 
