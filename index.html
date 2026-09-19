@@ -14,85 +14,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Unbounded:wght@400;700;900&family=JetBrains+Mono:wght@400;700&family=Pacifico&display=swap" rel="stylesheet">
-<style>
-:root{--lime:#CCFF00;--pink:#FF00E5;--cyan:#00F0FF;--bg:#0d0d0d;--paper:#EDEDED}
-*{-webkit-tap-highlight-color:transparent}
-@media(pointer:fine){*{cursor:none!important}}
-@media(pointer:coarse){.cursor-dot,.cursor-ring{display:none!important}}
-html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--paper);font-family:'JetBrains Mono',monospace;overflow-x:hidden}
-.font-display{font-family:'Anton',sans-serif}
-.font-funky{font-family:'Unbounded',sans-serif}
-.font-script{font-family:'Pacifico',cursive}
-::selection{background:var(--lime);color:#000}
-::-webkit-scrollbar{width:12px;background:#000}
-::-webkit-scrollbar-thumb{background:var(--lime);border:2px solid #000}
-::-webkit-scrollbar-track{background:#111}
-.cursor-dot{position:fixed;top:0;left:0;width:12px;height:12px;background:var(--lime);border-radius:50%;pointer-events:none;z-index:99999;mix-blend-mode:difference}
-.cursor-ring{position:fixed;top:0;left:0;width:44px;height:44px;border:2px solid var(--pink);border-radius:50%;pointer-events:none;z-index:99998;transition:width .2s,height .2s,background .2s,border-color .2s}
-.cursor-ring.hovering{width:92px;height:92px;background:rgba(204,255,0,.14);border-color:var(--lime)}
-#trail{position:fixed;inset:0;pointer-events:none;z-index:9990}
-#bg-stars{position:fixed;inset:0;z-index:-2}
-#webgl{position:absolute;inset:0;width:100%;height:100%;z-index:0;opacity:.7}
-#hero h1{filter:drop-shadow(0 3px 0 rgba(0,0,0,.92)) drop-shadow(0 0 26px rgba(0,0,0,.9))}
-.noise{position:fixed;inset:0;z-index:9000;pointer-events:none;opacity:.08;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
-.scanlines{position:fixed;inset:0;z-index:9001;pointer-events:none;background:repeating-linear-gradient(0deg,transparent 0 2px,rgba(0,0,0,.25) 2px 4px);opacity:.32}
-.glitch{position:relative;display:inline-block}
-.glitch::before,.glitch::after{content:attr(data-text);position:absolute;left:0;top:0;width:100%;overflow:hidden}
-.glitch::before{color:var(--pink);z-index:-1;animation:gl1 2.2s infinite linear alternate}
-.glitch::after{color:var(--cyan);z-index:-2;animation:gl2 3.1s infinite linear alternate}
-@keyframes gl1{0%{clip-path:inset(0 0 85% 0);transform:translate(-5px,-2px)}20%{clip-path:inset(20% 0 60% 0);transform:translate(5px,2px)}40%{clip-path:inset(50% 0 30% 0);transform:translate(-5px,1px)}60%{clip-path:inset(10% 0 70% 0);transform:translate(5px,-1px)}80%{clip-path:inset(70% 0 5% 0);transform:translate(-3px,2px)}100%{clip-path:inset(30% 0 40% 0);transform:translate(4px,-2px)}}
-@keyframes gl2{0%{clip-path:inset(70% 0 10% 0);transform:translate(5px,2px)}50%{clip-path:inset(10% 0 75% 0);transform:translate(-5px,-2px)}100%{clip-path:inset(40% 0 40% 0);transform:translate(3px,1px)}}
-.marquee-wrap{overflow:hidden;white-space:nowrap}
-.marquee-inner{display:inline-block;animation:marq 20s linear infinite;will-change:transform}
-.marquee-inner.fast{animation-duration:11s}
-@keyframes marq{to{transform:translateX(-50%)}}
-.brutal{border:3px solid #000;box-shadow:8px 8px 0 #000}
-.brutal-lime{box-shadow:8px 8px 0 var(--lime)}
-.brutal-pink{box-shadow:8px 8px 0 var(--pink)}
-.card-3d{transform-style:preserve-3d;transition:transform .15s ease-out;will-change:transform}
-.shard{position:fixed;pointer-events:none;z-index:99995}
-.btn-magnet{transition:transform .2s ease-out;will-change:transform}
-.psycho{animation:psy 1.1s linear infinite!important}
-@keyframes psy{0%{filter:hue-rotate(0)}100%{filter:hue-rotate(360deg)}}
-.jitter:hover{animation:jit .22s infinite}
-@keyframes jit{0%{transform:translate(0)}25%{transform:translate(2px,-2px) rotate(.5deg)}50%{transform:translate(-2px,2px)}75%{transform:translate(1px,1px) rotate(-.5deg)}100%{transform:translate(0)}}
-.float-slow{animation:floaty 6s ease-in-out infinite}
-@keyframes floaty{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-18px) rotate(1.5deg)}}
-.spin-slow{animation:spin 14s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
-.sticker{transform:rotate(-6deg)}
-.sticker2{transform:rotate(4deg)}
-.draggable{user-select:none}
-@media(pointer:fine){.draggable{touch-action:none}}
-.terminal-caret::after{content:'▊';animation:blink 1s steps(1) infinite;color:var(--lime)}
-@keyframes blink{50%{opacity:0}}
-#preloader{position:fixed;inset:0;background:#000;z-index:100000;display:flex;align-items:center;justify-content:center;flex-direction:column;transition:transform .7s cubic-bezier(.76,0,.24,1)}
-#preloader.done{transform:translateY(-101%)}
-.reveal{opacity:0;transform:translateY(60px);transition:opacity .8s ease,transform .8s cubic-bezier(.22,1,.36,1)}
-.reveal.in{opacity:1;transform:none}
-.lang-bar{height:8px;background:#222}
-.grid-bg{background-image:linear-gradient(rgba(204,255,0,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(204,255,0,.08) 1px,transparent 1px);background-size:44px 44px}
-.ghost-num{position:absolute;font-family:'Anton',sans-serif;line-height:.8;opacity:.09;pointer-events:none;user-select:none;font-size:24vw;top:0;right:-1rem}
-.outline-lime{color:transparent;-webkit-text-stroke:3px var(--lime)}
-.outline-pink{color:transparent;-webkit-text-stroke:3px var(--pink)}
-.outline-white{color:transparent;-webkit-text-stroke:2px #fff}
-#emoji-layer{position:fixed;inset:0;pointer-events:none;z-index:9600;overflow:hidden}
-.emoji-bit{position:absolute;top:-60px;font-size:32px;transition:top 2.4s linear,transform 2.4s linear}
-#matrix{position:fixed;inset:0;pointer-events:none;z-index:8500;overflow:hidden;color:#0f0;font-size:12px;line-height:1.1;opacity:.85;background:rgba(0,0,0,.35)}
-#matrix span{position:absolute;top:-10%;animation:fall linear infinite}
-@keyframes fall{to{transform:translateY(130vh)}}
-#previewModal{position:fixed;inset:0;z-index:95000;display:none;align-items:center;justify-content:center;padding:1rem}
-#previewModal.open{display:flex}
-#previewModal .backdrop{position:absolute;inset:0;background:rgba(0,0,0,.85)}
-#previewModal iframe{width:min(1100px,94vw);height:min(720px,84vh);background:#fff}
-.shake-hard{animation:shk .09s infinite}
-@keyframes shk{0%{transform:translate(-8px,4px) rotate(-.6deg)}50%{transform:translate(8px,-4px) rotate(.6deg)}100%{transform:translate(-5px,-3px)}}
-.hint-pulse{animation:hp 1.6s ease-in-out infinite}
-@keyframes hp{0%,100%{opacity:.55}50%{opacity:1}}
-#boot-log{min-height:96px}
-.tilt-inner{transform:translateZ(50px)}
-</style>
+<link rel="stylesheet" href="styles.css">
 <noscript><style>#preloader{display:none}.reveal{opacity:1;transform:none}#webgl{display:none}</style></noscript>
 </head>
 <body class="antialiased">
@@ -108,6 +30,7 @@ body{background:var(--bg);color:var(--paper);font-family:'JetBrains Mono',monosp
 <div class="cursor-ring" id="cRing"></div>
 <canvas id="bg-stars"></canvas>
 <canvas id="trail"></canvas>
+<div class="vignette"></div>
 <div class="noise"></div>
 <div class="scanlines"></div>
 <div class="fixed top-0 left-0 h-1 bg-[#CCFF00] z-[9500]" id="progress" style="width:0%"></div>
@@ -120,7 +43,6 @@ body{background:var(--bg);color:var(--paper);font-family:'JetBrains Mono',monosp
     <a href="#terminal" class="hoverable bg-white text-black px-3 py-2 border-2 border-black brutal jitter">TERMINAL</a>
     <a href="#stack" class="hoverable bg-[#FF00E5] text-black px-3 py-2 border-2 border-black brutal jitter">STACK</a>
     <a href="#projects" class="hoverable bg-[#00F0FF] text-black px-3 py-2 border-2 border-black brutal jitter">WORKS</a>
-    <a href="#lab" class="hoverable bg-black text-white px-3 py-2 border-2 border-white jitter">LAB☢</a>
   </div>
   <div class="flex gap-2">
     <button id="soundBtn" class="hoverable bg-black text-[#CCFF00] border-2 border-[#CCFF00] px-3 py-2 text-xs font-bold">SOUND:OFF</button>
@@ -199,7 +121,7 @@ body{background:var(--bg);color:var(--paper);font-family:'JetBrains Mono',monosp
     <div class="reveal brutal bg-[#EDEDED] text-black p-6 rotate-1 card-3d hoverable relative overflow-hidden">
       <div class="sticker absolute -top-2 -right-2 bg-[#FF00E5] text-black font-black px-4 py-1 border-2 border-black text-sm">SCARFACE MODE</div>
       <p class="font-funky font-black text-xl md:text-2xl leading-tight">“First you get the <span class="bg-black text-[#CCFF00] px-1">Python</span>, then you get the <span class="bg-[#CCFF00] px-1 border-2 border-black">power</span>, then you get the <span class="underline decoration-[#FF00E5] decoration-4">world</span>.”</p>
-      <p class="mt-4 text-sm">Я — <b>h1chan</b>. Bio с GitHub: <i>beginner in coding</i>. Стек из README: Python / SQL / GitHub / VSCode. Сейчас качаюсь во full-stack: HTML+CSS+JS уже в бою (смотри Sugar-Rush и Sushi-Rush — оба живые на GitHub Pages, оба MIT). Цель — backend-машина. Плюс в привате: Telegram-бот для удалённого управления ПК на Python.</p>
+      <p class="mt-4 text-sm">I'm <b>h1chan</b>. GitHub bio: <i>beginner in coding</i>. README stack: Python / SQL / GitHub / VSCode. Now grinding full-stack — HTML+CSS+JS already in battle (check Sugar-Rush and Sushi-Rush, both live on GitHub Pages, both MIT). Goal: backend machine. Plus in private: a Python Telegram bot for remote PC control.</p>
       <div class="mt-4 flex flex-wrap gap-2 text-xs font-bold">
         <span class="bg-black text-white px-2 py-1">PYTHON-111</span><span class="bg-black text-white px-2 py-1">SQL-111</span><span class="bg-black text-white px-2 py-1">GIT-111</span><span class="bg-[#CCFF00] border-2 border-black px-2 py-1">HTML/CSS/JS — IN PROD</span>
       </div>
@@ -234,7 +156,7 @@ body{background:var(--bg);color:var(--paper);font-family:'JetBrains Mono',monosp
         <div class="float-slow text-[90px] leading-none text-center select-none burst-target">🧁</div>
         <h3 class="font-display text-4xl mt-2">SUGAR-RUSH</h3>
         <p class="text-sm font-bold bg-[#CCFF00] inline-block px-2 border-2 border-black mt-1">Responsive bakery • vanilla HTML/CSS/JS</p>
-        <p class="text-sm mt-3">Нежный bakery-сайт, полностью на ванилле. 3 Swiper-слайдера, ScrollReveal, мобильное меню, карта. Сделан по туториалу Bedimcode — и доведён до прода.</p>
+        <p class="text-sm mt-3">Soft bakery site on pure vanilla: 3 Swiper sliders, ScrollReveal, mobile menu, embedded map. Started from a Bedimcode tutorial — finished to prod.</p>
         <div class="mt-3"><div class="flex justify-between text-[11px] font-bold"><span>HTML 52%</span><span>CSS 34%</span><span>JS 10%</span></div><div class="flex h-2 border-2 border-black mt-1"><div style="width:52%" class="bg-[#FF5A00]"></div><div style="width:34%" class="bg-[#7B2FF7]"></div><div style="width:14%" class="bg-[#CCFF00]"></div></div></div>
         <div class="mt-4 flex flex-wrap gap-2">
           <button data-preview="https://h1chan.github.io/Sugar-Rush/" data-title="Sugar-Rush — live preview" class="hoverable preview-open flex-1 text-center bg-black text-[#CCFF00] font-black py-3 border-2 border-black jitter min-w-[120px]">◉ PREVIEW</button>
@@ -250,7 +172,7 @@ body{background:var(--bg);color:var(--paper);font-family:'JetBrains Mono',monosp
         <div class="float-slow text-[90px] leading-none text-center select-none burst-target" style="animation-delay:-3s">🍣</div>
         <h3 class="font-display text-4xl mt-2 text-[#00F0FF]">SUSHI-RUSH</h3>
         <p class="text-sm font-bold bg-[#00F0FF] text-black inline-block px-2 border-2 border-white mt-1">HTML • MIT • GitHub Pages</p>
-        <p class="text-sm mt-3 text-white/80">Sushi-ресторан: hero с 6 блюдами, кандзи-орнаменты, synced Swiper-табы меню (5 категорий × 3 блюда), mobile-first. Самый свежий хаос — пуш 17.09.2026.</p>
+        <p class="text-sm mt-3 text-white/80">Sushi restaurant: 6-dish hero, kanji ornaments, synced Swiper menu tabs (5 categories × 3 dishes), mobile-first. Freshest chaos — pushed 2026-09-17.</p>
         <div class="mt-3"><div class="flex justify-between text-[11px] font-bold"><span>HTML 53%</span><span>CSS 43%</span><span>JS 4%</span></div><div class="flex h-2 border-2 border-white mt-1"><div style="width:53%" class="bg-[#00F0FF]"></div><div style="width:43%" class="bg-[#FF00E5]"></div><div style="width:4%" class="bg-[#CCFF00]"></div></div></div>
         <div class="mt-4 flex flex-wrap gap-2">
           <button data-preview="https://h1chan.github.io/Sushi-Rush/" data-title="Sushi-Rush — live preview" class="hoverable preview-open flex-1 text-center bg-[#CCFF00] text-black font-black py-3 border-2 border-white jitter min-w-[120px]">◉ PREVIEW</button>
@@ -264,32 +186,18 @@ body{background:var(--bg);color:var(--paper);font-family:'JetBrains Mono',monosp
   <div class="mt-6 reveal brutal bg-black border-2 border-white p-4 flex flex-wrap items-center gap-3 relative" style="border:2px solid #fff">
     <span class="text-xs text-white/60 font-bold">+ META + BACKEND:</span>
     <a href="https://github.com/h1chan/h1chan" target="_blank" rel="noopener" class="hoverable bg-white text-black px-3 py-2 text-sm font-black border-2 border-[#CCFF00] jitter">h1chan/h1chan — profile README ★ typing-SVG + streak</a>
-    <span class="text-xs text-white/60 font-bold hidden md:inline">static.io — Telegram-бот для управления ПК (Python, private) • saas — in the oven</span>
+    <span class="text-xs text-white/60 font-bold hidden md:inline">static.io — Telegram bot for remote PC control (Python, private) • saas — in the oven</span>
     <button id="spawnBtn" class="hoverable ml-auto bg-[#CCFF00] text-black px-4 py-2 font-black border-2 border-[#CCFF00] jitter">+ SPAWN CLONE</button>
   </div>
-</section>
-
-<section id="lab" class="relative bg-[#CCFF00] text-black border-y-4 border-black px-5 md:px-12 py-16 overflow-hidden">
-  <div class="ghost-num" style="opacity:.12">☢</div>
-  <h2 class="reveal font-display text-5xl md:text-7xl relative">☢ CHAOS_LAB</h2>
-  <p class="reveal font-bold text-sm relative">Жми всё. Ломай всё. Звук — синтез WebAudio, осколки — canvas+GSAP. Konami-код тоже где-то здесь… ↑↑↓↓←→←→BA</p>
-  <div class="mt-6 flex flex-wrap gap-3 relative">
-    <button data-chaos="burst" class="chaos hoverable brutal bg-black text-[#CCFF00] px-6 py-4 font-black jitter">💥 BURST</button>
-    <button data-chaos="rain" class="chaos hoverable brutal bg-[#FF00E5] px-6 py-4 font-black jitter">🌧 EMOJI RAIN</button>
-    <button data-chaos="shake" class="chaos hoverable brutal bg-white px-6 py-4 font-black jitter">📳 EARTHQUAKE</button>
-    <button data-chaos="invert" class="chaos hoverable brutal bg-[#00F0FF] px-6 py-4 font-black jitter">🌀 INVERT</button>
-    <button data-chaos="matrix" class="chaos hoverable brutal bg-black text-green-400 px-6 py-4 font-black jitter">MATRIX</button>
-  </div>
-  <div id="lab-floor" class="reveal mt-8 min-h-[120px] border-[3px] border-dashed border-black p-4 text-sm font-bold relative">FLOOR: кликни сюда для взрыва ⤵ (а тройной клик в любом месте — мега-взрыв)</div>
 </section>
 
 <section class="relative px-5 md:px-12 py-20 max-w-6xl mx-auto text-center">
   <h2 class="reveal font-display text-[13vw] md:text-[8vw] leading-[.9]">THE WORLD<br><span class="outline-pink">IS YOURS.</span></h2>
   <p class="reveal mt-4 text-white/60 text-sm tracking-widest">SCARFACE PHILOSOPHY // BACKEND APPRENTICE CREED</p>
   <div class="reveal mt-8 grid md:grid-cols-3 gap-4 text-left">
-    <div class="brutal bg-black border-2 border-white p-5" style="border:2px solid #fff"><div class="text-[#CCFF00] font-black">01 / LEARN LOUD</div><p class="text-sm text-white/70 mt-2">Python + SQL — ядро. HTML/CSS/JS — полигон. Каждый коммит — в прод на GitHub Pages.</p></div>
-    <div class="brutal bg-[#FF00E5] text-black p-5 -rotate-1"><div class="font-black">02 / SHIP FAST</div><p class="text-sm mt-2 font-bold">2 живых сайта. MIT license. Telegram-бот на Python. No excuse.</p></div>
-    <div class="brutal bg-white text-black p-5 rotate-1"><div class="font-black">03 / HIRE ME?</div><p class="text-sm mt-2">Ищу ментора / стажировку / первый backend-оффер. KZ • remote • hungry.</p></div>
+    <div class="brutal bg-black border-2 border-white p-5" style="border:2px solid #fff"><div class="text-[#CCFF00] font-black">01 / LEARN LOUD</div><p class="text-sm text-white/70 mt-2">Python + SQL is the core. HTML/CSS/JS is the playground. Every commit ships to prod on GitHub Pages.</p></div>
+    <div class="brutal bg-[#FF00E5] text-black p-5 -rotate-1"><div class="font-black">02 / SHIP FAST</div><p class="text-sm mt-2 font-bold">2 live sites. MIT license. A Python Telegram bot. No excuses.</p></div>
+    <div class="brutal bg-white text-black p-5 rotate-1"><div class="font-black">03 / HIRE ME?</div><p class="text-sm mt-2">Looking for a mentor / internship / first backend offer. KZ • remote • hungry.</p></div>
   </div>
   <a href="https://github.com/h1chan" target="_blank" rel="noopener" class="hoverable reveal btn-magnet inline-block mt-10 brutal brutal-lime bg-[#CCFF00] text-black font-display text-3xl md:text-5xl px-10 py-5 jitter">HIRE THE APPRENTICE ↗</a>
   <div class="mt-6 flex flex-wrap justify-center gap-3 text-xs font-bold">
@@ -319,161 +227,6 @@ body{background:var(--bg);color:var(--paper);font-family:'JetBrains Mono',monosp
   </div>
 </div>
 
-<script>
-(function(){
-'use strict';
-function $(s,c){return (c||document).querySelector(s);}
-function $all(s,c){return Array.prototype.slice.call((c||document).querySelectorAll(s));}
-/* ---------- SOUND (WebAudio synth) ---------- */
-var audioOn=false, actx=null;
-function tone(f,d,type){ if(!audioOn) return; try{ actx=actx||new (window.AudioContext||window.webkitAudioContext)(); if(actx.state==='suspended')actx.resume(); var o=actx.createOscillator(),g=actx.createGain(); o.type=type||'square'; o.frequency.value=f+Math.random()*120; g.gain.value=.045; o.connect(g); g.connect(actx.destination); o.start(); g.gain.exponentialRampToValueAtTime(.0001,actx.currentTime+d); o.stop(actx.currentTime+d);}catch(e){} }
-function blip(f){ tone(f||440,.07); }
-/* ---------- PRELOADER ---------- */
-var pv=0, bootLines=['&gt; mount /dev/kz_rage ............ OK','&gt; load python.exe ............... 65%','&gt; inject sql_sorcery.dll ......... OK','&gt; compile html/css/js ..... 31k/20k/6k','&gt; bypass fears ................. DELETED','&gt; launch EYEPHORIA.EXE'], bi=0;
-var ln=$('#load-num'), lb=$('#load-bar'), blog=$('#boot-log'), pre=$('#preloader');
-var bootTimer=setInterval(function(){ if(bi<bootLines.length && blog){ var d=document.createElement('div'); d.innerHTML=bootLines[bi++]; blog.appendChild(d);} },160);
-var li=setInterval(function(){ pv+=6+Math.random()*13; if(pv>=100){ pv=100; clearInterval(li); clearInterval(bootTimer); if(ln)ln.textContent='100'; if(lb)lb.style.width='100%'; setTimeout(function(){ if(pre){ pre.classList.add('done'); setTimeout(function(){ if(pre.parentNode)pre.parentNode.removeChild(pre); },750);} heroIntro(); },350);} if(ln)ln.textContent=Math.floor(pv); if(lb)lb.style.width=pv+'%'; },95);
-setTimeout(function(){ var p=$('#preloader'); if(p){ p.classList.add('done'); setTimeout(function(){ if(p.parentNode)p.parentNode.removeChild(p); },750);} },7000); /* hard failsafe */
-/* ---------- SMOOTH SCROLL (Lenis, guarded) ---------- */
-try{ if(window.Lenis){ var lenis=new Lenis({duration:1.15,smoothWheel:true}); function raf(t){ lenis.raf(t); requestAnimationFrame(raf);} requestAnimationFrame(raf); if(window.ScrollTrigger){ lenis.on('scroll',function(){ if(window.ScrollTrigger)ScrollTrigger.update(); }); } } }catch(e){}
-try{ if(window.gsap && window.ScrollTrigger){ gsap.registerPlugin(ScrollTrigger); } }catch(e){}
-/* ---------- CURSOR + TRAIL ---------- */
-var fine=window.matchMedia && window.matchMedia('(pointer:fine)').matches;
-var dot=$('#cDot'), ring=$('#cRing');
-var mx=innerWidth/2,my=innerHeight/2,rx=mx,ry=my;
-if(fine){ addEventListener('mousemove',function(e){ mx=e.clientX; my=e.clientY; if(dot)dot.style.transform='translate('+(mx-6)+'px,'+(my-6)+'px)'; spawnTrail(mx,my); },{passive:true});
-(function loop(){ rx+=(mx-rx)*.16; ry+=(my-ry)*.16; if(ring){ var w=ring.offsetWidth||44; ring.style.transform='translate('+(rx-w/2)+'px,'+(ry-w/2)+'px)'; } requestAnimationFrame(loop); })();
-$all('a,button,.hoverable,input').forEach(function(el){ el.addEventListener('mouseenter',function(){ if(ring)ring.classList.add('hovering'); blip(620); }); el.addEventListener('mouseleave',function(){ if(ring)ring.classList.remove('hovering'); }); });
-}
-var tc=$('#trail'), tctx=tc?tc.getContext('2d'):null, parts=[];
-function sizeT(){ if(!tc)return; tc.width=innerWidth; tc.height=innerHeight; } sizeT(); addEventListener('resize',sizeT);
-function spawnTrail(x,y){ if(!tctx)return; parts.push({x:x,y:y,vx:(Math.random()-.5)*3,vy:(Math.random()-.5)*3-1,life:1,c:Math.random()>.5?'#CCFF00':'#FF00E5',s:Math.random()*5+2}); if(parts.length>320)parts.shift(); }
-(function drawT(){ if(tctx){ tctx.clearRect(0,0,tc.width,tc.height); parts=parts.filter(function(p){return p.life>0;}); parts.forEach(function(p){ p.x+=p.vx; p.y+=p.vy; p.vy+=.05; p.life-=.02; tctx.globalAlpha=Math.max(p.life,0); tctx.fillStyle=p.c; tctx.fillRect(p.x,p.y,p.s,p.s); }); tctx.globalAlpha=1; } requestAnimationFrame(drawT); })();
-/* ---------- BG STARS (2D fallback grid + stars) ---------- */
-var bg=$('#bg-stars'), bctx=bg?bg.getContext('2d'):null, stars=[];
-function sizeB(){ if(!bg)return; bg.width=innerWidth; bg.height=innerHeight; var n=innerWidth<768?70:150; stars=[]; for(var i=0;i<n;i++)stars.push({x:Math.random()*bg.width,y:Math.random()*bg.height,z:Math.random()*1.4+.3,r:Math.random()*1.8+.4}); } sizeB(); addEventListener('resize',sizeB);
-(function drawB(){ if(!bctx){return;} bctx.fillStyle='#0d0d0d'; bctx.fillRect(0,0,bg.width,bg.height); var t=Date.now()/1000; for(var i=0;i<stars.length;i++){ var s=stars[i]; s.y+=s.z*.4; if(s.y>bg.height)s.y=0; var tw=.35+.65*Math.abs(Math.sin(t*2+s.x)); bctx.fillStyle=s.z>1?'#CCFF00':'#ffffff'; bctx.globalAlpha=tw*.8; bctx.beginPath(); bctx.arc(s.x,s.y,s.r,0,7); bctx.fill(); } bctx.globalAlpha=.1; bctx.strokeStyle='#CCFF00'; bctx.lineWidth=1; var x,y; for(x=0;x<bg.width;x+=44){ bctx.beginPath(); bctx.moveTo(x,0); bctx.lineTo(x,bg.height); bctx.stroke(); } for(y=0;y<bg.height;y+=44){ bctx.beginPath(); bctx.moveTo(0,y); bctx.lineTo(bg.width,y); bctx.stroke(); } bctx.globalAlpha=1; requestAnimationFrame(drawB); })();
-/* ---------- THREE.JS HERO: NEBULA DRIFT (center stays clean for the type) ---------- */
-try{
-if(window.THREE && $('#webgl')){
-var canvas=$('#webgl');
-var renderer=new THREE.WebGLRenderer({canvas:canvas,alpha:true,antialias:true});
-var scene=new THREE.Scene();
-scene.fog=new THREE.FogExp2(0x0d0d0d,0.06);
-var camera=new THREE.PerspectiveCamera(60,1,.1,100); camera.position.set(0,1.1,8); camera.lookAt(0,-.4,0);
-var isMobile=innerWidth<768;
-/* ambient particle nebula — dim, slow, never fights the headline */
-var pn=isMobile?300:750, pos=new Float32Array(pn*3), spd=new Float32Array(pn);
-for(var pi=0;pi<pn;pi++){ pos[pi*3]=(Math.random()-.5)*26; pos[pi*3+1]=(Math.random()-.5)*14; pos[pi*3+2]=(Math.random()-.5)*10-2; spd[pi]=.15+Math.random()*.5; }
-var pg=new THREE.BufferGeometry(); pg.setAttribute('position',new THREE.BufferAttribute(pos,3));
-var pts=new THREE.Points(pg,new THREE.PointsMaterial({color:0x9beaff,size:.05,transparent:true,opacity:.55})); scene.add(pts);
-/* sparse lime accent dust */
-var pn2=isMobile?80:200, pos2=new Float32Array(pn2*3);
-for(var pj=0;pj<pn2;pj++){ pos2[pj*3]=(Math.random()-.5)*24; pos2[pj*3+1]=(Math.random()-.5)*12; pos2[pj*3+2]=(Math.random()-.5)*8-1; }
-var pg2=new THREE.BufferGeometry(); pg2.setAttribute('position',new THREE.BufferAttribute(pos2,3));
-var dust=new THREE.Points(pg2,new THREE.PointsMaterial({color:0xccff00,size:.07,transparent:true,opacity:.45})); scene.add(dust);
-/* synthwave grid floor — sits below the text */
-var grid=new THREE.GridHelper(60,44,0xccff00,0x1e3a00); grid.position.y=-3.4; grid.material.transparent=true; grid.material.opacity=.32; scene.add(grid);
-/* side accent rock — parked right of the headline, never over it */
-var rock=new THREE.Mesh(new THREE.IcosahedronGeometry(1.15,1),new THREE.MeshBasicMaterial({color:0xff00e5,wireframe:true,transparent:true,opacity:.5}));
-rock.position.set(2.5,0.6,-1.0); scene.add(rock);
-var rock2=new THREE.Mesh(new THREE.IcosahedronGeometry(1.7,0),new THREE.MeshBasicMaterial({color:0x00f0ff,wireframe:true,transparent:true,opacity:.2}));
-rock2.position.copy(rock.position); scene.add(rock2);
-function sizeGL(){ var h=canvas.parentElement; var w=h.clientWidth, hh=h.clientHeight; renderer.setSize(w,hh,false); camera.aspect=w/hh; camera.updateProjectionMatrix(); if(w<768){ rock.position.set(2.4,-2.6,-3); rock.scale.setScalar(.7); } else { rock.position.set(2.5,0.6,-1.0); rock.scale.setScalar(1); } rock2.position.copy(rock.position); rock2.scale.copy(rock.scale); rock.userData.by=rock.position.y; } sizeGL(); addEventListener('resize',sizeGL);
-var tmx=0,tmy=0; addEventListener('mousemove',function(e){ tmx=(e.clientX/innerWidth-.5); tmy=(e.clientY/innerHeight-.5); },{passive:true});
-var reduce=window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-var t0=Date.now()/1000;
-(function anim(){ requestAnimationFrame(anim); if(reduce)return; var t=Date.now()/1000-t0;
-var pa=pg.attributes.position.array; for(var i=0;i<pn;i++){ pa[i*3+1]+=spd[i]*.008; pa[i*3]+=Math.sin(t*.4+i)*.0012; if(pa[i*3+1]>7)pa[i*3+1]=-7; } pg.attributes.position.needsUpdate=true;
-dust.rotation.y=t*.02; pts.rotation.y=tmx*.08;
-rock.rotation.x=t*.25; rock.rotation.y=t*.3; rock2.rotation.x=-t*.15; rock2.rotation.y=-t*.2;
-rock.position.y=(rock.userData.by||0)+Math.sin(t*.8)*.28; rock2.position.copy(rock.position);
-var sy=window.scrollY||0; grid.position.z=(sy*.004)%1.36; pts.position.y=sy*.0006;
-camera.position.x+=(tmx*.9-camera.position.x)*.04; camera.position.y+=((1.1-tmy*.7)-camera.position.y)*.04; camera.lookAt(0,-.4,0);
-renderer.render(scene,camera); })();
-}
-}catch(e){ var wgl=$('#webgl'); if(wgl)wgl.style.display='none'; }
-/* ---------- TOGGLES ---------- */
-var sBtn=$('#soundBtn'); if(sBtn)sBtn.onclick=function(e){ audioOn=!audioOn; sBtn.textContent='SOUND:'+(audioOn?'ON':'OFF'); tone(880,.15); explode(e.clientX||innerWidth/2,e.clientY||200,20); };
-var pBtn=$('#psychoBtn'); if(pBtn)pBtn.onclick=function(e){ document.body.classList.toggle('psycho'); tone(200,.3,'sawtooth'); explode(e.clientX||innerWidth/2,e.clientY||200,40); };
-/* ---------- TYPING ---------- */
-var lines2=['Backend developer in training_','The world is yours_','Python > excuses_','from KZ with rage_']; var L2=0,C2=0,del=false;
-(function type(){ var el=$('#typing'); if(!el)return; var cur=lines2[L2]; el.textContent=cur.slice(0,C2); if(!del){ C2++; if(C2>cur.length){ del=true; setTimeout(type,1100); return; } }else{ C2--; if(C2===0){ del=false; L2=(L2+1)%lines2.length; } } setTimeout(type,del?28:58); })();
-/* ---------- REVEALS + COUNTERS (IO, no GSAP dependency) ---------- */
-var io=new IntersectionObserver(function(es){ es.forEach(function(en){ if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); } }); },{threshold:.12});
-$all('.reveal').forEach(function(el){ io.observe(el); });
-/* NOTE: no timer failsafe here on purpose — IntersectionObserver is native and
-   always works, so scroll reveals keep animating even if all CDNs die. */
-var cio=new IntersectionObserver(function(es){ es.forEach(function(en){ if(!en.isIntersecting)return; var c=en.target; cio.unobserve(c); var to=+c.dataset.to||0, v=0; var step=Math.max(1,Math.round(to/40)); var t=setInterval(function(){ v+=step; if(v>=to){ v=to; clearInterval(t);} c.textContent=v; },40); }); },{threshold:.4});
-$all('.counter').forEach(function(c){ cio.observe(c); });
-function heroIntro(){ if(window.gsap){ try{ gsap.from('#hero h1',{y:110,opacity:0,duration:1,ease:'power4.out',clearProps:'transform,opacity'}); gsap.from('#hero .btn-magnet',{scale:0,opacity:0,duration:.7,stagger:.1,ease:'back.out(2)',clearProps:'transform,opacity'}); }catch(e){} } setTimeout(function(){ $all('#hero .btn-magnet,#hero h1').forEach(function(b){ b.style.transform=''; b.style.opacity=''; }); },3000); }
-/* ---------- PROGRESS ---------- */
-addEventListener('scroll',function(){ var h=document.documentElement; var max=h.scrollHeight-h.clientHeight; var p=$('#progress'); if(p)p.style.width=(max>0?(h.scrollTop/max*100):0)+'%'; },{passive:true});
-/* ---------- MAGNETIC + TILT ---------- */
-if(fine){
-$all('.btn-magnet').forEach(function(b){ b.addEventListener('mousemove',function(e){ var r=b.getBoundingClientRect(); var x=e.clientX-r.left-r.width/2, y=e.clientY-r.top-r.height/2; b.style.transform='translate('+(x*.25)+'px,'+(y*.25)+'px)'; }); b.addEventListener('mouseleave',function(){ b.style.transform=''; }); });
-$all('.card-3d').forEach(function(card){ card.addEventListener('mousemove',function(e){ var r=card.getBoundingClientRect(); var x=(e.clientX-r.left)/r.width-.5, y=(e.clientY-r.top)/r.height-.5; card.style.transform='perspective(800px) rotateY('+(x*14)+'deg) rotateX('+(-y*14)+'deg) scale(1.02)'; }); card.addEventListener('mouseleave',function(){ card.style.transform=''; }); });
-}
-/* ---------- EXPLOSION SHARDS ---------- */
-function explode(x,y,n){ n=n||22; var colors=['#CCFF00','#FF00E5','#00F0FF','#ffffff','#000000']; for(var i=0;i<n;i++){ var s=document.createElement('div'); s.className='shard'; var sz=Math.random()*14+6; s.style.left=x+'px'; s.style.top=y+'px'; s.style.width=sz+'px'; s.style.height=sz+'px'; s.style.background=colors[i%colors.length]; s.style.border='2px solid #000'; document.body.appendChild(s); (function(el){ var a=Math.random()*Math.PI*2, v=Math.random()*420+120; var dx=Math.cos(a)*v, dy=Math.sin(a)*v-120; if(window.gsap){ gsap.to(el,{x:dx,y:dy,rotation:Math.random()*720-360,opacity:0,duration:.9+Math.random()*.6,ease:'power2.out',onComplete:function(){ if(el.parentNode)el.parentNode.removeChild(el); }}); } else { el.style.transition='all .8s ease-out'; requestAnimationFrame(function(){ el.style.transform='translate('+dx+'px,'+dy+'px)'; el.style.opacity='0'; }); setTimeout(function(){ if(el.parentNode)el.parentNode.removeChild(el); },850); } })(s); } blip(150+Math.random()*500); }
-document.addEventListener('click',function(e){ if(e.target.closest && e.target.closest('#term-in,#previewModal'))return; if(e.detail===3){ explode(e.clientX,e.clientY,90); return; } explode(e.clientX,e.clientY,12); });
-$all('.stack-card').forEach(function(c){ c.addEventListener('click',function(e){ explode(e.clientX,e.clientY,42); tone(900,.18); if(window.gsap){ gsap.fromTo(c,{scale:1.06},{scale:1,duration:.4,ease:'elastic.out(1,.4)'}); } }); });
-$all('.burst-target').forEach(function(el){ el.addEventListener('click',function(e){ e.stopPropagation(); explode(e.clientX,e.clientY,50); }); });
-var floor=$('#lab-floor'); if(floor)floor.addEventListener('click',function(e){ e.stopPropagation(); explode(e.clientX,e.clientY,55); });
-/* ---------- DRAG PROJECTS (mouse only, touch keeps scroll) ---------- */
-$all('.draggable').forEach(function(el){
-var sx,sy,drag=false;
-el.addEventListener('pointerdown',function(e){ if(e.pointerType==='touch')return; if(e.target.closest && e.target.closest('a,button,input,iframe'))return; drag=true; sx=e.clientX; sy=e.clientY; try{el.setPointerCapture(e.pointerId);}catch(_){} el.style.position='relative'; el.style.zIndex=5000; });
-el.addEventListener('pointermove',function(e){ if(!drag)return; el.style.left=(e.clientX-sx)+'px'; el.style.top=(e.clientY-sy)+'px'; });
-el.addEventListener('pointerup',function(e){ if(!drag)return; drag=false; el.style.zIndex=''; if(window.gsap){ gsap.fromTo(el,{scale:1.04},{scale:1,duration:.5,ease:'elastic.out(1,.4)'}); } explode(e.clientX,e.clientY,20); });
-el.addEventListener('pointercancel',function(){ drag=false; });
-});
-var spawn=$('#spawnBtn'); if(spawn)spawn.onclick=function(e){ var z=$('#proj-zone'); if(!z||!z.children.length)return; var c=z.children[0].cloneNode(true); var h=c.querySelector('h3'); if(h)h.textContent='CLONE-'+Math.floor(Math.random()*999); z.appendChild(c); explode(e.clientX||innerWidth/2,e.clientY||300,40); };
-/* ---------- CHAOS LAB ---------- */
-function emojiRain(){ var layer=$('#emoji-layer'); if(!layer)return; var em=['🍣','🧁','💥','🐍','☢','🍰','⚡','👾','🍩','🛸']; for(var i=0;i<34;i++){ (function(k){ setTimeout(function(){ var s=document.createElement('span'); s.className='emoji-bit'; s.textContent=em[Math.floor(Math.random()*em.length)]; s.style.left=(Math.random()*100)+'vw'; layer.appendChild(s); requestAnimationFrame(function(){ s.style.top='112vh'; s.style.transform='rotate('+(Math.random()*720-360)+'deg)'; }); setTimeout(function(){ if(s.parentNode)s.parentNode.removeChild(s); },2600); },k*70); })(i); } }
-var matrixOn=false;
-function matrixMode(){ var m=$('#matrix'); if(!m)return; matrixOn=!matrixOn; m.classList.toggle('hidden',!matrixOn); if(!matrixOn){ m.innerHTML=''; return; } var chars='01H1CHAN<>/\\|'; var html=''; for(var i=0;i<46;i++){ var col=''; for(var k=0;k<16;k++)col+=chars[Math.floor(Math.random()*chars.length)]+'<br>'; html+='<span style="left:'+(Math.random()*100)+'%;animation-duration:'+(1.4+Math.random()*2.4)+'s">'+col+'</span>'; } m.innerHTML=html; }
-$all('.chaos').forEach(function(b){ b.onclick=function(e){ e.stopPropagation(); var k=b.dataset.chaos; tone(300,.2,'sawtooth');
-if(k==='burst'){ explode(innerWidth/2,innerHeight/2,130); }
-if(k==='rain'){ emojiRain(); for(var i=0;i<24;i++){ (function(j){ setTimeout(function(){ explode(Math.random()*innerWidth,Math.random()*innerHeight*.5,8); },j*90); })(i); } }
-if(k==='shake'){ if(window.gsap){ gsap.fromTo('body',{x:-14},{x:14,duration:.05,repeat:22,yoyo:true,clearProps:'x'}); } else { document.body.classList.add('shake-hard'); setTimeout(function(){ document.body.classList.remove('shake-hard'); },900); } }
-if(k==='invert'){ document.body.style.filter=document.body.style.filter?'':'invert(1) hue-rotate(180deg)'; setTimeout(function(){ document.body.style.filter=''; },1300); }
-if(k==='matrix'){ matrixMode(); }
-explode(e.clientX||innerWidth/2,e.clientY||300,26); }; });
-/* ---------- PREVIEW MODAL ---------- */
-var modal=$('#previewModal'), frame=$('#previewFrame'), pTitle=$('#previewTitle');
-function openPreview(title,url){ if(pTitle)pTitle.textContent=title||'PREVIEW'; if(frame)frame.src=url; if(modal)modal.classList.add('open'); }
-function closePreview(){ if(modal)modal.classList.remove('open'); if(frame)frame.src='about:blank'; }
-$all('.preview-open').forEach(function(b){ b.addEventListener('click',function(e){ e.stopPropagation(); openPreview(b.dataset.title||'PREVIEW',b.dataset.preview); tone(700,.12); }); });
-var pClose=$('#previewClose'); if(pClose)pClose.onclick=function(e){ e.stopPropagation(); closePreview(); };
-var pBack=$('#previewBackdrop'); if(pBack)pBack.onclick=closePreview;
-addEventListener('keydown',function(e){ if(e.key==='Escape')closePreview(); });
-/* ---------- TERMINAL ---------- */
-var tin=$('#term-in'), tlog=$('#term-log');
-function tprint(html,cls){ var r=document.createElement('div'); if(cls)r.className=cls; r.innerHTML=html; if(tlog)tlog.appendChild(r); }
-if(tin)tin.addEventListener('keydown',function(e){
-if(e.key!=='Enter')return; var raw=tin.value.trim(); var v=raw.toLowerCase(); tin.value='';
-var d=document.createElement('div'); d.innerHTML='<span class="text-[#CCFF00]">➜ ~</span> '+raw.replace(/</g,'&lt;'); if(tlog)tlog.appendChild(d);
-if(v==='help')tprint('cmds: whoami | stack | projects | kz | open sugar | open sushi | preview sugar | acid | matrix | hire-me | clear | rm -rf fears','text-white/80');
-else if(v==='whoami')tprint('h1chan / eyephoria — backend apprentice, KZ, beginner → dangerous.','text-white/80');
-else if(v==='stack')tprint('Python 65% • SQL 55% • HTML 80% • CSS 78% • JS 60% • Git 70%','text-white/80');
-else if(v==='projects')tprint('1) Sugar-Rush — bakery, live on Pages 2) Sushi-Rush — fresh sep 2026 3) h1chan — profile readme 4) static.io — tg bot (private)','text-white/80');
-else if(v==='kz')tprint('Привет из Казахстана! Пиши на GitHub — github.com/h1chan','text-white/80');
-else if(v==='sudo hire-me'||v==='hire-me')tprint('<b class="text-[#CCFF00]">[ACCESS GRANTED]</b> → <a class="underline" href="https://github.com/h1chan" target="_blank">github.com/h1chan</a> — жми HIRE!','text-white/80');
-else if(v==='acid'){ document.body.classList.toggle('psycho'); tprint('ACID mode toggled. hue goes brrr.','text-white/80'); }
-else if(v==='matrix'){ matrixMode(); tprint('matrix '+(matrixOn?'ON':'OFF'),'text-white/80'); }
-else if(v==='open sugar'||v==='preview sugar'){ openPreview('Sugar-Rush — live preview','https://h1chan.github.io/Sugar-Rush/'); tprint('opening Sugar-Rush preview…','text-white/80'); }
-else if(v==='open sushi'||v==='preview sushi'){ openPreview('Sushi-Rush — live preview','https://h1chan.github.io/Sushi-Rush/'); tprint('opening Sushi-Rush preview…','text-white/80'); }
-else if(v==='clear'){ if(tlog)tlog.innerHTML=''; return; }
-else if(v==='rm -rf fears'){ tprint('fears deleted. THE WORLD IS YOURS.','text-white/80'); explode(innerWidth/2,300,90); }
-else if(!v)return; else tprint('command not found: '+v.replace(/</g,'&lt;')+' — try help','text-white/80');
-tone(500,.07);
-});
-var topBtn=$('#topBtn'); if(topBtn)topBtn.onclick=function(){ scrollTo({top:0,behavior:'smooth'}); };
-/* ---------- KONAMI EASTER EGG ---------- */
-var seq=['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'], ki=0;
-addEventListener('keydown',function(e){ var k=e.key.length===1?e.key.toLowerCase():e.key; if(k===seq[ki]){ ki++; if(ki===seq.length){ ki=0; document.body.classList.add('psycho'); emojiRain(); explode(innerWidth/2,innerHeight/2,140); tprint('KONAMI ACCEPTED. ACID UNLOCKED FOREVER.','text-[#CCFF00] font-bold'); tone(1200,.4,'sawtooth'); } } else ki=0; });
-})();
-</script>
+<script src="app.js"></script>
 </body>
 </html>
