@@ -131,7 +131,7 @@ body{background:var(--bg);color:var(--paper);font-family:'JetBrains Mono',monosp
 <header id="hero" class="min-h-screen grid-bg relative flex flex-col justify-center px-5 md:px-12 pt-28 pb-12 overflow-hidden">
   <canvas id="webgl"></canvas>
   <div class="relative z-10">
-    <div class="absolute top-2 right-2 md:right-16 md:top-6 w-28 h-28 md:w-44 md:h-44 spin-slow opacity-90 pointer-events-none">
+    <div class="absolute top-28 right-2 md:right-16 md:top-6 w-24 h-24 md:w-36 md:h-36 spin-slow opacity-90 pointer-events-none">
       <svg viewBox="0 0 200 200" class="w-full h-full"><defs><path id="circ" d="M100,100 m-75,0 a75,75 0 1,1 150,0 a75,75 0 1,1 -150,0"/></defs><circle cx="100" cy="100" r="98" fill="#CCFF00" stroke="black" stroke-width="4"/><text font-size="20" font-weight="900" font-family="monospace"><textPath href="#circ">THE WORLD IS YOURS • KZ • BACKEND • H1CHAN • </textPath></text></svg>
     </div>
     <div class="text-[11px] md:text-sm mb-4 flex flex-wrap gap-2 items-center max-w-3xl">
@@ -139,7 +139,7 @@ body{background:var(--bg);color:var(--paper);font-family:'JetBrains Mono',monosp
       <span class="bg-white text-black px-2 py-1 border-2 border-black">◈ ORIGIN: KAZAKHSTAN KZ</span>
       <span class="bg-black text-white px-2 py-1 border-2 border-white">◈ STATUS: BEGINNER → DANGEROUS</span>
     </div>
-    <h1 class="font-display leading-[.85] text-[21vw] md:text-[15vw]">
+    <h1 class="font-display leading-[.85] text-[15vw] md:text-[10vw]">
       <span class="glitch text-white" data-text="H1CHAN">H1CHAN</span><br>
       <span class="outline-lime">EYEPHORIA</span>
     </h1>
@@ -376,10 +376,10 @@ var dust=new THREE.Points(pg2,new THREE.PointsMaterial({color:0xccff00,size:.07,
 var grid=new THREE.GridHelper(60,44,0xccff00,0x1e3a00); grid.position.y=-3.4; grid.material.transparent=true; grid.material.opacity=.32; scene.add(grid);
 /* side accent rock — parked right of the headline, never over it */
 var rock=new THREE.Mesh(new THREE.IcosahedronGeometry(1.15,1),new THREE.MeshBasicMaterial({color:0xff00e5,wireframe:true,transparent:true,opacity:.5}));
-rock.position.set(5.6,.9,-1); scene.add(rock);
+rock.position.set(6.0,-2.0,-1.5); scene.add(rock);
 var rock2=new THREE.Mesh(new THREE.IcosahedronGeometry(1.7,0),new THREE.MeshBasicMaterial({color:0x00f0ff,wireframe:true,transparent:true,opacity:.2}));
 rock2.position.copy(rock.position); scene.add(rock2);
-function sizeGL(){ var h=canvas.parentElement; var w=h.clientWidth, hh=h.clientHeight; renderer.setSize(w,hh,false); camera.aspect=w/hh; camera.updateProjectionMatrix(); if(w<768){ rock.position.set(0,2.8,-3); rock.scale.setScalar(.7); } else { rock.position.set(5.6,.9,-1); rock.scale.setScalar(1); } rock2.position.copy(rock.position); rock2.scale.copy(rock.scale); } sizeGL(); addEventListener('resize',sizeGL);
+function sizeGL(){ var h=canvas.parentElement; var w=h.clientWidth, hh=h.clientHeight; renderer.setSize(w,hh,false); camera.aspect=w/hh; camera.updateProjectionMatrix(); if(w<768){ rock.position.set(2.4,-2.6,-3); rock.scale.setScalar(.7); } else { rock.position.set(6.0,-2.0,-1.5); rock.scale.setScalar(1); } rock2.position.copy(rock.position); rock2.scale.copy(rock.scale); } sizeGL(); addEventListener('resize',sizeGL);
 var tmx=0,tmy=0; addEventListener('mousemove',function(e){ tmx=(e.clientX/innerWidth-.5); tmy=(e.clientY/innerHeight-.5); },{passive:true});
 var reduce=window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 var t0=Date.now()/1000;
