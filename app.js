@@ -147,6 +147,22 @@ else if(!v)return; else tprint('command not found: '+v.replace(/</g,'&lt;')+' �
 tone(500,.07);
 });
 var topBtn=$('#topBtn'); if(topBtn)topBtn.onclick=function(){ scrollTo({top:0,behavior:'smooth'}); };
+/* ---------- SIGNAL: live GitHub feed ---------- */
+var sigLog=$('#signal-log'), sigRepos=$('#signal-repos'), sigStatus=$('#signal-status');
+var SIG_FALLBACK=[
+ {name:'Sushi-Rush',lang:'HTML',pushed:'2026-09-17',license:'MIT',url:'https://github.com/h1chan/Sushi-Rush'},
+ {name:'Sugar-Rush',lang:'HTML',pushed:'2026-09-16',license:'MIT',url:'https://github.com/h1chan/Sugar-Rush'},
+ {name:'Site-Rush',lang:'HTML',pushed:'2026-09-19',license:null,url:'https://github.com/h1chan/Site-Rush'},
+ {name:'h1chan',lang:null,pushed:'2026-06-26',license:null,url:'https://github.com/h1chan/h1chan'}
+];
+function sigPrint(html,cls){ if(!sigLog)return; var d=document.createElement('div'); d.className='sig-line '+(cls||'text-white/70'); d.innerHTML=html; sigLog.appendChild(d); while(sigLog.children.length>34)sigLog.removeChild(sigLog.firstChild); sigLog.scrollTop=sigLog.scrollHeight; }
+function sigRows(repos,live){ if(!sigRepos)return; var old=sigRepos.querySelectorAll('.sig-row'); for(var i=0;i<old.length;i++)old[i].parentNode.removeChild(old[i]); repos.slice(0,5).forEach(function(r,i){ var a=document.createElement('a'); a.className='sig-row hoverable group flex items-center gap-4 bg-[#0a0a0a] border-2 border-white/15 p-4'; a.style.borderWidth='2px'; a.href=r.url; a.target='_blank'; a.rel='noopener'; var num=('0'+(i+1)).slice(-2); var meta=[r.lang||'—',r.pushed?('pushed '+r.pushed):'',r.license||''].filter(Boolean).join(' • '); a.innerHTML='<span class="font-display text-2xl text-white/25">'+num+'</span><span class="flex-1 min-w-0"><span class="block font-black truncate">'+r.name+'</span><span class="block text-[11px] text-white/50">'+meta+'</span></span><span class="text-[#CCFF00] font-black">↗</span>'; sigRepos.appendChild(a); }); if(sigStatus)sigStatus.textContent=live?'● LIVE':'● CACHED'; }
+var sigTimer=null;
+function sigStream(names){ var flavors=['> handshake kz-node ............ OK','> latency 42ms — acceptable rage','> tailing /var/log/world ......','> python.exe still hungry','> sql_sorcery.dll injected','> fears not found (deleted)','> uptime: since 2023-11-05','> caffeine level: CRITICAL','> shipping > sleeping']; var i=0; if(sigTimer)clearInterval(sigTimer); sigTimer=setInterval(function(){ if(!sigLog||document.hidden)return; var line; if(i<names.length){ line='<span class="text-[#CCFF00]">◈ push</span> <b>'+names[i]+'</b> → live on GitHub'; } else { line='<span class="text-white/35">'+flavors[i%flavors.length]+'</span>'; } i++; sigPrint(line); },1600); }
+sigRows(SIG_FALLBACK,false); sigStream(SIG_FALLBACK.map(function(r){return r.name;}));
+try{
+fetch('https://api.github.com/users/h1chan/repos?sort=pushed&per_page=6').then(function(r){ if(!r.ok)throw 0; return r.json(); }).then(function(data){ if(!Array.isArray(data)||!data.length)return; var repos=data.filter(function(x){return !x.fork;}).map(function(x){ return {name:x.name,lang:x.language,pushed:(x.pushed_at||'').slice(0,10),license:(x.license&&x.license.spdx_id)||null,url:x.html_url}; }); sigRows(repos,true); sigStream(repos.map(function(x){return x.name;})); sigPrint('<span class="text-[#CCFF00]">◈ uplink</span> GitHub API connected — '+repos.length+' repos synced'); }).catch(function(){ sigPrint('<span class="text-[#FF00E5]">◈ uplink</span> API unreachable — running on cached intel'); });
+}catch(e){}
 /* ---------- KONAMI EASTER EGG ---------- */
 var seq=['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'], ki=0;
 addEventListener('keydown',function(e){ var k=e.key.length===1?e.key.toLowerCase():e.key; if(k===seq[ki]){ ki++; if(ki===seq.length){ ki=0; document.body.classList.add('psycho'); emojiRain(); explode(innerWidth/2,innerHeight/2,140); tprint('KONAMI ACCEPTED. ACID UNLOCKED FOREVER.','text-[#CCFF00] font-bold'); tone(1200,.4,'sawtooth'); } } else ki=0; });
