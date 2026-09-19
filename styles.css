@@ -74,4 +74,10 @@ body{background:var(--bg);color:var(--paper);font-family:'JetBrains Mono',monosp
 #boot-log{min-height:96px}
 .tilt-inner{transform:translateZ(50px)}
 .vignette{position:fixed;inset:0;z-index:8999;pointer-events:none;background:radial-gradient(ellipse at center,transparent 52%,rgba(0,0,0,.55) 100%)}
+#signal-log{scrollbar-width:none}
+#signal-log::-webkit-scrollbar{display:none}
+.sig-line{white-space:pre-wrap;word-break:break-word;animation:sigin .3s ease-out}
+@keyframes sigin{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:none}}
+.sig-row{transition:border-color .2s,transform .2s}
+.sig-row:hover{transform:translateX(6px)}
 
