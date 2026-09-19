@@ -121,6 +121,8 @@ function matrixMode(){ var m=$('#matrix'); if(!m)return; matrixOn=!matrixOn; m.c
 var modal=$('#previewModal'), frame=$('#previewFrame'), pTitle=$('#previewTitle');
 function openPreview(title,url){ if(pTitle)pTitle.textContent=title||'PREVIEW'; if(frame)frame.src=url; if(modal)modal.classList.add('open'); }
 function closePreview(){ if(modal)modal.classList.remove('open'); if(frame)frame.src='about:blank'; }
+/* capture-phase delegation so SPAWN CLONE copies stay alive (cloneNode drops listeners) */
+document.addEventListener('click',function(e){ var b=e.target&&e.target.closest?e.target.closest('.preview-open'):null; if(!b)return; e.stopPropagation(); e.preventDefault(); openPreview(b.getAttribute('data-title')||'PREVIEW',b.getAttribute('data-preview')); tone(700,.12); },true);
 $all('.preview-open').forEach(function(b){ b.addEventListener('click',function(e){ e.stopPropagation(); openPreview(b.dataset.title||'PREVIEW',b.dataset.preview); tone(700,.12); }); });
 var pClose=$('#previewClose'); if(pClose)pClose.onclick=function(e){ e.stopPropagation(); closePreview(); };
 var pBack=$('#previewBackdrop'); if(pBack)pBack.onclick=closePreview;
