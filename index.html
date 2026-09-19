@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>H1CHAN // EYEPHORIA — Backend Apprentice</title>
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Unbounded:wght@400;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--lime:#CCFF00;--pink:#FF00E5;--cyan:#00F0FF;--bg:#0d0d0d;--paper:#EDEDED}
+*{cursor:none!important}
+@media(pointer:coarse){*{cursor:auto!important}.cursor-dot,.cursor-ring{display:none!important}}
+body{background:var(--bg);color:var(--paper);font-family:'JetBrains Mono',monospace;overflow-x:hidden}
+.font-display{font-family:'Anton',sans-serif}.font-funky{font-family:'Unbounded',sans-serif}
+::selection{background:var(--lime);color:#000}
+.cursor-dot{position:fixed;top:0;left:0;width:12px;height:12px;background:var(--lime);border-radius:50%;pointer-events:none;z-index:99999;mix-blend-mode:difference}
+.cursor-ring{position:fixed;top:0;left:0;width:44px;height:44px;border:2px solid var(--pink);border-radius:50%;pointer-events:none;z-index:99998;transition:width .2s,height .2s,background .2s;mix-blend-mode:screen}
+.cursor-ring.hovering{width:90px;height:90px;background:rgba(204,255,0,.15);border-color:var(--lime)}
+#trail{position:fixed;inset:0;pointer-events:none;z-index:9990}
+#bg-stars{position:fixed;inset:0;z-index:-2}
+.noise{position:fixed;inset:0;z-index:9000;pointer-events:none;opacity:.08;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.scanlines{position:fixed;inset:0;z-index:9001;pointer-events:none;background:repeating-linear-gradient(0deg,transparent 0 2px,rgba(0,0,0,.25) 2px 4px);opacity:.35}
+.glitch{position:relative;display:inline-block}
+.glitch::before,.glitch::after{content:attr(data-text);position:absolute;left:0;top:0;width:100%;overflow:hidden}
+.glitch::before{color:var(--pink);z-index:-1;animation:gl1 2s infinite linear alternate}
+.glitch::after{color:var(--cyan);z-index:-2;animation:gl2 3s infinite linear alternate}
+@keyframes gl1{0%{clip-path:inset(0 0 85% 0);transform:translate(-4px,-2px)}20%{clip-path:inset(20% 0 60% 0);transform:translate(4px,2px)}40%{clip-path:inset(50% 0 30% 0);transform:translate(-4px,1px)}60%{clip-path:inset(10% 0 70% 0);transform:translate(4px,-1px)}80%{clip-path:inset(70% 0 5% 0);transform:translate(-2px,2px)}100%{clip-path:inset(30% 0 40% 0);transform:translate(3px,-2px)}}
+@keyframes gl2{0%{clip-path:inset(70% 0 10% 0);transform:translate(4px,2px)}50%{clip-path:inset(10% 0 75% 0);transform:translate(-4px,-2px)}100%{clip-path:inset(40% 0 40% 0);transform:translate(2px,1px)}}
+.marquee-wrap{overflow:hidden;white-space:nowrap}
+.marquee-inner{display:inline-block;animation:marq 18s linear infinite}
+@keyframes marq{to{transform:translateX(-50%)}}
+.brutal{border:3px solid #000;box-shadow:8px 8px 0 #000}
+.brutal-lime{box-shadow:8px 8px 0 var(--lime)}
+.card-3d{transform-style:preserve-3d;transition:transform .15s ease-out}
+.shard{position:fixed;pointer-events:none;z-index:99995}
+.btn-magnet{transition:transform .2s}
+.psycho{animation:psy 1.2s linear infinite!important}
+@keyframes psy{0%{filter:hue-rotate(0)}100%{filter:hue-rotate(360deg)}}
+.jitter:hover{animation:jit .2s infinite}
+@keyframes jit{0%{transform:translate(0)}25%{transform:translate(2px,-2px) rotate(.5deg)}50%{transform:translate(-2px,2px)}75%{transform:translate(1px,1px) rotate(-.5deg)}100%{transform:translate(0)}}
+.float-slow{animation:floaty 6s ease-in-out infinite}
+@keyframes floaty{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-18px) rotate(1.5deg)}}
+.spin-slow{animation:spin 14s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.sticker{transform:rotate(-6deg)}
+.sticker2{transform:rotate(4deg)}
+.tilt-inner{transform:translateZ(50px)}
+.draggable{touch-action:none;user-select:none}
+.terminal-caret::after{content:'▊';animation:blink 1s steps(1) infinite;color:var(--lime)}
+@keyframes blink{50%{opacity:0}}
+input,textarea{cursor:none!important}
+#preloader{position:fixed;inset:0;background:#000;z-index:100000;display:flex;align-items:center;justify-content:center;flex-direction:column}
+.reveal{opacity:0;transform:translateY(60px)}
+.lang-bar{height:8px;background:#222}
+.grid-bg{background-image:linear-gradient(rgba(204,255,0,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(204,255,0,.08) 1px,transparent 1px);background-size:44px 44px}
+</style>
+</head>
+<body class="antialiased">
+<div id="preloader"><div class="font-display text-[18vw] leading-none text-[#CCFF00]" id="load-num">0</div><div class="text-sm tracking-[.4em] text-white/70">LOADING H1CHAN.EXE // KZ_BACKEND</div><div class="w-[60vw] h-2 bg-white/10 mt-6"><div id="load-bar" class="h-full bg-[#CCFF00]" style="width:0%"></div></div></div>
+<div class="cursor-dot" id="cDot"></div><div class="cursor-ring" id="cRing"></div>
+<canvas id="bg-stars"></canvas><canvas id="trail"></canvas>
+<div class="noise"></div><div class="scanlines"></div>
+<div class="fixed top-0 left-0 h-1 bg-[#CCFF00] z-[9500]" id="progress" style="width:0%"></div>
+<nav class="fixed top-0 left-0 right-0 z-[8000] px-4 py-3 flex items-center justify-between mix-blend-normal">
+<div class="bg-black text-[#CCFF00] border-2 border-[#CCFF00] px-3 py-1 font-bold brutal">H1CHAN://EYEPHORIA</div>
+<div class="hidden md:flex gap-2 text-xs font-bold">
+<a href="#hero" class="hoverable bg-[#CCFF00] text-black px-3 py-2 border-2 border-black brutal jitter">HERO</a>
+<a href="#terminal" class="hoverable bg-white text-black px-3 py-2 border-2 border-black brutal jitter">TERMINAL</a>
+<a href="#stack" class="hoverable bg-[#FF00E5] text-black px-3 py-2 border-2 border-black brutal jitter">STACK</a>
+<a href="#projects" class="hoverable bg-[#00F0FF] text-black px-3 py-2 border-2 border-black brutal jitter">WORKS</a>
+<a href="#lab" class="hoverable bg-black text-white px-3 py-2 border-2 border-white jitter">LAB☢</a>
+</div>
+<div class="flex gap-2">
+<button id="soundBtn" class="hoverable bg-black text-[#CCFF00] border-2 border-[#CCFF00] px-3 py-2 text-xs font-bold">SOUND:OFF</button>
+<button id="psychoBtn" class="hoverable bg-[#FF00E5] text-black border-2 border-black px-3 py-2 text-xs font-bold brutal">ACID</button>
+</div>
+</nav>
+<header id="hero" class="min-h-screen grid-bg relative flex flex-col justify-center px-5 md:px-12 pt-24 pb-10 overflow-hidden">
+<div class="absolute top-24 right-6 md:right-16 w-28 h-28 md:w-44 md:h-44 spin-slow opacity-90"><svg viewBox="0 0 200 200" class="w-full h-full"><defs><path id="circ" d="M100,100 m-75,0 a75,75 0 1,1 150,0 a75,75 0 1,1 -150,0"/></defs><circle cx="100" cy="100" r="98" fill="#CCFF00" stroke="black" stroke-width="4"/><text font-size="20" font-weight="900"><textPath href="#circ">THE WORLD IS YOURS • KZ • BACKEND • H1CHAN • </textPath></text></svg></div>
+<div class="text-xs md:text-sm mb-3 flex flex-wrap gap-2 items-center"><span class="bg-[#CCFF00] text-black px-2 py-1 font-bold border-2 border-black">◈ CLASS: BACKEND / FULL-STACK APPRENTICE</span><span class="bg-white text-black px-2 py-1 border-2 border-black">◈ ORIGIN: KAZAKHSTAN KZ</span><span class="bg-black text-white px-2 py-1 border-2 border-white">◈ STATUS: BEGINNER IN CODING → DANGEROUS</span></div>
+<h1 class="font-display leading-[.85] text-[20vw] md:text-[15vw]"><span class="glitch text-white" data-text="H1CHAN">H1CHAN</span><br><span class="text-transparent" style="-webkit-text-stroke:3px #CCFF00">EYEPHORIA</span></h1>
+<p class="mt-4 text-lg md:text-2xl max-w-2xl"><span id="typing" class="terminal-caret text-[#CCFF00] font-bold"></span></p>
+<div class="mt-8 flex flex-wrap gap-4 items-center">
+<a href="https://github.com/h1chan" target="_blank" class="hoverable btn-magnet brutal brutal-lime bg-[#CCFF00] text-black font-funky font-900 px-8 py-4 text-lg font-black jitter">GITHUB ↗</a>
+<a href="#projects" class="hoverable btn-magnet brutal bg-[#FF00E5] text-black px-8 py-4 font-black">SEE WORKS ↓</a>
+<div class="flex items-center gap-3 bg-black border-2 border-white p-2 brutal"><img src="https://avatars.githubusercontent.com/u/149922102?v=4" class="w-12 h-12 border-2 border-[#CCFF00]" alt="h1chan"><div class="text-xs leading-tight"><div class="text-[#CCFF00] font-bold">eyephoria // h1chan</div><div class="text-white/70">3 repos • 3 followers • 1 following</div><div class="text-white/50">since 2023-11-05</div></div></div>
+</div>
+<div class="mt-10 grid grid-cols-3 md:grid-cols-6 gap-2 text-center text-xs font-bold">
+<div class="bg-black border-2 border-[#CCFF00] p-3"><div class="text-2xl text-[#CCFF00] font-display counter" data-to="3">0</div>REPOS</div>
+<div class="bg-black border-2 border-white p-3"><div class="text-2xl font-display counter" data-to="100">0</div>% RAGE</div>
+<div class="bg-[#CCFF00] border-2 border-black p-3 text-black"><div class="text-2xl font-display counter" data-to="24">0</div>/7 CODE</div>
+<div class="bg-[#FF00E5] border-2 border-black p-3 text-black"><div class="text-2xl font-display">KZ</div>ORIGIN</div>
+<div class="bg-white border-2 border-black p-3 text-black"><div class="text-2xl font-display">PY</div>MAIN</div>
+<div class="bg-black border-2 border-[#00F0FF] p-3"><div class="text-2xl text-[#00F0FF] font-display">∞</div>AMBITION</div>
+</div>
+<div class="absolute bottom-6 left-1/2 -translate-x-1/2 text-xs tracking-[.4em] animate-bounce">SCROLL TO HACK ▼</div>
+</header>
+<div class="marquee-wrap bg-[#CCFF00] text-black border-y-4 border-black py-3 font-display text-2xl md:text-4xl -rotate-1 scale-105 relative z-10">
+<div class="marquee-inner"><span>BACKEND IN TRAINING ★ THE WORLD IS YOURS ★ PYTHON ★ SQL ★ HTML ★ CSS ★ JAVASCRIPT ★ KAZAKHSTAN ★ H1CHAN ★&nbsp;</span><span>BACKEND IN TRAINING ★ THE WORLD IS YOURS ★ PYTHON ★ SQL ★ HTML ★ CSS ★ JAVASCRIPT ★ KAZAKHSTAN ★ H1CHAN ★&nbsp;</span></div>
+</div>
+<div class="marquee-wrap bg-[#FF00E5] text-black border-b-4 border-black py-2 font-bold text-sm rotate-1"><div class="marquee-inner" style="animation-direction:reverse;animation-duration:12s"><span>DRAG ME • CLICK ME • EXPLODE ME • BREAK ME • DRAG ME • CLICK ME • EXPLODE ME • BREAK ME •&nbsp;</span><span>DRAG ME • CLICK ME • EXPLODE ME • BREAK ME • DRAG ME • CLICK ME • EXPLODE ME • BREAK ME •&nbsp;</span></div></div>
+<section id="terminal" class="px-5 md:px-12 py-20 max-w-6xl mx-auto">
+<h2 class="reveal font-display text-5xl md:text-8xl mb-6"><span class="bg-black text-[#CCFF00] px-3">WHOAMI</span> <span class="text-transparent" style="-webkit-text-stroke:2px white">.SH</span></h2>
+<div class="grid md:grid-cols-2 gap-6">
+<div class="reveal brutal bg-[#111] border-white p-0 overflow-hidden card-3d hoverable">
+<div class="flex gap-2 p-3 bg-black border-b-2 border-white/20"><span class="w-3 h-3 rounded-full bg-red-500"></span><span class="w-3 h-3 rounded-full bg-yellow-400"></span><span class="w-3 h-3 rounded-full bg-green-400"></span><span class="ml-2 text-xs text-white/50">h1chan@kz:~</span></div>
+<div class="p-5 text-sm leading-relaxed min-h-[320px]" id="term-out"><div><span class="text-[#CCFF00]">➜ ~</span> whoami</div><div class="text-white/90">eyephoria aka <b class="text-[#CCFF00]">h1chan</b> — Backend / Full-Stack Apprentice from Kazakhstan. Beginner in coding, but obsessed.</div><div><span class="text-[#CCFF00]">➜ ~</span> cat motto.txt</div><div class="text-[#FF00E5] font-bold">"Backend developer in training. The world is yours."</div><div class="text-white/60 text-xs mt-2">type <b>help</b> + Enter. Try: stack, projects, kz, sudo hire-me</div><div id="term-log"></div><div class="flex items-center gap-2 mt-2"><span class="text-[#CCFF00]">➜ ~</span><input id="term-in" class="hoverable bg-transparent outline-none flex-1 text-[#CCFF00]" placeholder="type here..." autocomplete="off"></div></div>
+</div>
+<div class="reveal brutal bg-[#EDEDED] text-black p-6 rotate-1 card-3d hoverable relative overflow-hidden">
+<div class="sticker absolute -top-2 -right-2 bg-[#FF00E5] text-black font-black px-4 py-1 border-2 border-black">SCARFACE MODE</div>
+<p class="font-funky font-black text-2xl leading-tight">“First you get the <span class="bg-black text-[#CCFF00] px-1">Python</span>, then you get the <span class="bg-[#CCFF00] px-1 border-2 border-black">power</span>, then you get the <span class="underline decoration-[#FF00E5] decoration-4">world</span>.”</p>
+<p class="mt-4 text-sm">Я — кодер <b>h1chan</b>. Bio с GitHub: <i>beginner in coding</i>. Стек из README: Python / SQL / GitHub / VSCode. Сейчас качаюсь во full-stack: HTML+CSS+JS уже в бою (смотри Sugar-Rush и Sushi-Rush). Цель — backend-машина.</p>
+<div class="mt-4 flex flex-wrap gap-2 text-xs font-bold"><span class="bg-black text-white px-2 py-1">PYTHON-111</span><span class="bg-black text-white px-2 py-1">SQL-111</span><span class="bg-black text-white px-2 py-1">GIT-111</span><span class="bg-[#CCFF00] border-2 border-black px-2 py-1">HTML/CSS/JS — IN PROD</span></div>
+<img src="https://i.pinimg.com/originals/06/d8/5d/06d85dfe641057ec9462c0bc6b092aa6.gif" class="mt-4 w-full h-40 object-cover border-2 border-black" alt="vibe" onerror="this.style.display='none'">
+<div class="mt-2 text-[11px] opacity-60">gif from readme // if blocked — imagine Scarface tiger</div>
+</div>
+</div>
+</section>
+<section id="stack" class="px-5 md:px-12 py-16 bg-black border-y-4 border-[#CCFF00] relative overflow-hidden">
+<h2 class="reveal font-display text-5xl md:text-8xl text-[#CCFF00]">STACK<span class="text-white">_OVERDRIVE</span></h2>
+<p class="reveal text-white/60 text-sm mt-2 mb-8">HOVER = tilt • CLICK = EXPLODE ☢ // all from github.com/h1chan readme</p>
+<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4" id="stack-grid">
+<div class="stack-card hoverable reveal brutal bg-[#CCFF00] text-black p-5 text-center card-3d" data-name="PYTHON"><div class="text-5xl">🐍</div><div class="font-black font-funky mt-2">PYTHON</div><div class="text-xs font-bold">MAIN WEAPON</div><div class="mt-2 text-xs bg-black text-[#CCFF00] py-1">LVL 65%</div></div>
+<div class="stack-card hoverable reveal brutal bg-white text-black p-5 text-center card-3d" data-name="SQL"><div class="text-5xl">🗄</div><div class="font-black font-funky mt-2">SQL</div><div class="text-xs font-bold">DATA SORCERY</div><div class="mt-2 text-xs bg-black text-white py-1">LVL 55%</div></div>
+<div class="stack-card hoverable reveal brutal bg-[#FF00E5] text-black p-5 text-center card-3d" data-name="HTML"><div class="text-5xl">🌐</div><div class="font-black font-funky mt-2">HTML5</div><div class="text-xs font-bold">23k bytes in prod</div><div class="mt-2 text-xs bg-black text-white py-1">LVL 80%</div></div>
+<div class="stack-card hoverable reveal brutal bg-[#00F0FF] text-black p-5 text-center card-3d" data-name="CSS"><div class="text-5xl">🎨</div><div class="font-black font-funky mt-2">CSS3</div><div class="text-xs font-bold">20k bytes acid</div><div class="mt-2 text-xs bg-black text-white py-1">LVL 78%</div></div>
+<div class="stack-card hoverable reveal brutal bg-black text-[#CCFF00] border-2 border-[#CCFF00] p-5 text-center card-3d" data-name="JS"><div class="text-5xl">⚡</div><div class="font-black font-funky mt-2">JAVASCRIPT</div><div class="text-xs font-bold">6k + growing</div><div class="mt-2 text-xs bg-[#CCFF00] text-black py-1">LVL 60%</div></div>
+<div class="stack-card hoverable reveal brutal bg-[#111] text-white border-2 border-white p-5 text-center card-3d" data-name="GIT"><div class="text-5xl">🐙</div><div class="font-black font-funky mt-2">GITHUB</div><div class="text-xs font-bold">h1chan home</div><div class="mt-2 text-xs bg-white text-black py-1">LVL 70%</div></div>
+</div>
+</section>
+<section id="projects" class="px-5 md:px-12 py-20 max-w-7xl mx-auto">
+<h2 class="reveal font-display text-5xl md:text-8xl leading-none">SELECTED<br><span class="glitch text-[#CCFF00]" data-text="CHAOS">CHAOS</span> <span class="text-xs align-top bg-[#FF00E5] text-black px-2 py-1 border-2 border-black font-mono">drag cards! ↓</span></h2>
+<p class="reveal mt-3 text-white/60 text-sm">Real repos from github.com/h1chan • drag to throw • click image for burst • LIVE DEMO inside</p>
+<div class="mt-8 grid md:grid-cols-2 gap-8" id="proj-zone" style="min-height:400px">
+<article class="proj draggable hoverable reveal brutal bg-white text-black p-0 rotate-[-1.5deg] card-3d relative" data-url="https://h1chan.github.io/Sugar-Rush/">
+<div class="bg-black text-white text-xs px-4 py-2 flex justify-between border-b-[3px] border-black"><span>📁 Sugar-Rush/</span><span class="text-[#CCFF00]">● LIVE ON PAGES</span></div>
+<div class="p-5">
+<div class="float-slow text-[90px] leading-none text-center select-none">🧁</div>
+<h3 class="font-display text-4xl mt-2">SUGAR-RUSH</h3>
+<p class="text-sm font-bold bg-[#CCFF00] inline-block px-2 border-2 border-black mt-1">Responsive bakery • vanilla HTML/CSS/JS</p>
+<p class="text-sm mt-3">Нежный bakery-сайт, полностью на ванилле. HTML 31k • CSS 20k • JS 6k. Адаптив, меню, корзиноподобная логика.</p>
+<div class="mt-3"><div class="flex justify-between text-[11px] font-bold"><span>HTML 52%</span><span>CSS 34%</span><span>JS 10%</span></div><div class="flex h-2 border-2 border-black mt-1"><div style="width:52%" class="bg-[#FF5A00]"></div><div style="width:34%" class="bg-[#7B2FF7]"></div><div style="width:14%" class="bg-[#CCFF00]"></div></div></div>
+<div class="mt-4 flex gap-2">
+<a href="https://h1chan.github.io/Sugar-Rush/" target="_blank" class="hoverable flex-1 text-center bg-black text-[#CCFF00] font-black py-3 border-2 border-black jitter">▶ LIVE DEMO</a>
+<a href="https://github.com/h1chan/Sugar-Rush" target="_blank" class="hoverable flex-1 text-center bg-white font-black py-3 border-2 border-black jitter">〈〉 CODE</a>
+</div></div>
+<div class="sticker2 absolute -top-4 -left-2 bg-[#CCFF00] border-2 border-black px-3 py-1 font-black text-sm">FLAGSHIP ★</div>
+</article>
+<article class="proj draggable hoverable reveal brutal bg-[#111] text-white p-0 rotate-[1.5deg] card-3d relative border-white" style="border:3px solid white;box-shadow:8px 8px 0 #FF00E5">
+<div class="bg-[#FF00E5] text-black text-xs px-4 py-2 flex justify-between font-bold border-b-[3px] border-white"><span>📁 Sushi-Rush/</span><span>● FRESH 2026-09</span></div>
+<div class="p-5">
+<div class="float-slow text-[90px] leading-none text-center select-none" style="animation-delay:-3s">🍣</div>
+<h3 class="font-display text-4xl mt-2 text-[#00F0FF]">SUSHI-RUSH</h3>
+<p class="text-sm font-bold bg-[#00F0FF] text-black inline-block px-2 border-2 border-white mt-1">HTML • MIT • GitHub Pages</p>
+<p class="text-sm mt-3 text-white/80">Sushi-доставка / игра? HTML 23k • CSS 20k • JS 1.7k. Последний пуш 17.09.2026. Самый свежий хаос.</p>
+<div class="mt-3"><div class="flex justify-between text-[11px] font-bold"><span>HTML 53%</span><span>CSS 43%</span><span>JS 4%</span></div><div class="flex h-2 border-2 border-white mt-1"><div style="width:53%" class="bg-[#00F0FF]"></div><div style="width:43%" class="bg-[#FF00E5]"></div><div style="width:4%" class="bg-[#CCFF00]"></div></div></div>
+<div class="mt-4 flex gap-2">
+<a href="https://h1chan.github.io/Sushi-Rush/" target="_blank" class="hoverable flex-1 text-center bg-[#CCFF00] text-black font-black py-3 border-2 border-white jitter">▶ LIVE DEMO</a>
+<a href="https://github.com/h1chan/Sushi-Rush" target="_blank" class="hoverable flex-1 text-center bg-transparent font-black py-3 border-2 border-white jitter">〈〉 CODE</a>
+</div></div>
+<div class="sticker absolute -top-4 -right-2 bg-[#00F0FF] text-black border-2 border-white px-3 py-1 font-black text-sm">NEW!</div>
+</article>
+</div>
+<div class="mt-6 reveal brutal bg-black border-2 border-white p-4 flex flex-wrap items-center gap-3">
+<span class="text-xs text-white/60 font-bold">+ META-REPO:</span>
+<a href="https://github.com/h1chan/h1chan" target="_blank" class="hoverable bg-white text-black px-3 py-2 text-sm font-black border-2 border-[#CCFF00] jitter">h1chan/h1chan — profile README ★ typing-SVG + streak + activity graph</a>
+<button id="spawnBtn" class="hoverable ml-auto bg-[#CCFF00] text-black px-4 py-2 font-black border-2 border-[#CCFF00] jitter">+ SPAWN CLONE</button>
+</div>
+</section>
+<section id="lab" class="bg-[#CCFF00] text-black border-y-4 border-black px-5 md:px-12 py-16 relative overflow-hidden">
+<h2 class="reveal font-display text-5xl md:text-7xl">☢ CHAOS_LAB</h2>
+<p class="reveal font-bold text-sm">Жми всё. Ломай всё. Звук — синтез WebAudio, частиц — canvas.</p>
+<div class="mt-6 flex flex-wrap gap-3">
+<button data-chaos="burst" class="chaos hoverable brutal bg-black text-[#CCFF00] px-6 py-4 font-black jitter">💥 BURST</button>
+<button data-chaos="rain" class="chaos hoverable brutal bg-[#FF00E5] px-6 py-4 font-black jitter">🌧 EMOJI RAIN</button>
+<button data-chaos="shake" class="chaos hoverable brutal bg-white px-6 py-4 font-black jitter">📳 EARTHQUAKE</button>
+<button data-chaos="invert" class="chaos hoverable brutal bg-[#00F0FF] px-6 py-4 font-black jitter">🌀 INVERT</button>
+<button data-chaos="matrix" class="chaos hoverable brutal bg-black text-green-400 px-6 py-4 font-black jitter">MATRIX</button>
+</div>
+<div id="lab-floor" class="mt-8 min-h-[120px] border-[3px] border-dashed border-black p-4 text-sm font-bold">FLOOR: кликни сюда для взрыва ⤵</div>
+</section>
+<section class="px-5 md:px-12 py-20 max-w-6xl mx-auto text-center">
+<h2 class="reveal font-display text-[13vw] md:text-[8vw] leading-[.9]">THE WORLD<br><span class="text-transparent" style="-webkit-text-stroke:3px #FF00E5">IS YOURS.</span></h2>
+<p class="reveal mt-4 text-white/60 text-sm tracking-widest">SCARFACE PHILOSOPHY // BACKEND APPRENTICE CREED</p>
+<div class="reveal mt-8 grid md:grid-cols-3 gap-4 text-left">
+<div class="brutal bg-black border-2 border-white p-5"><div class="text-[#CCFF00] font-black">01 / LEARN LOUD</div><p class="text-sm text-white/70 mt-2">Python + SQL — ядро. HTML/CSS/JS — полигон. Каждый коммит — в прод.</p></div>
+<div class="brutal bg-[#FF00E5] text-black p-5 -rotate-1"><div class="font-black">02 / SHIP FAST</div><p class="text-sm mt-2 font-bold">2 живых сайта на GitHub Pages. MIT license. No excuse.</p></div>
+<div class="brutal bg-white text-black p-5 rotate-1"><div class="font-black">03 / HIRE ME?</div><p class="text-sm mt-2">Ищу ментора / стажировку / первый backend-оффер. KZ • remote • hungry.</p></div>
+</div>
+<a href="https://github.com/h1chan" target="_blank" class="hoverable reveal btn-magnet inline-block mt-10 brutal bg-[#CCFF00] text-black font-display text-3xl md:text-5xl px-10 py-5 jitter">HIRE THE APPRENTICE ↗</a>
+<div class="mt-6 flex justify-center gap-3 text-xs font-bold">
+<a href="https://github.com/h1chan/Sugar-Rush" target="_blank" class="hoverable underline">Sugar-Rush</a><span>•</span>
+<a href="https://github.com/h1chan/Sushi-Rush" target="_blank" class="hoverable underline">Sushi-Rush</a><span>•</span>
+<a href="https://github.com/h1chan/h1chan" target="_blank" class="hoverable underline">README</a>
+</div>
+</section>
+<footer class="border-t-4 border-[#CCFF00] px-5 md:px-12 py-8 flex flex-col md:flex-row gap-3 items-center justify-between text-xs text-white/60 bg-black">
+<div>© 2026 H1CHAN // EYEPHORIA — built with rage in KZ. No templates harmed.</div>
+<div class="flex gap-2"><span class="bg-[#CCFF00] text-black px-2 py-1 font-bold">HTML</span><span class="bg-[#FF00E5] text-black px-2 py-1 font-bold">CSS</span><span class="bg-[#00F0FF] text-black px-2 py-1 font-bold">JS</span><span class="bg-white text-black px-2 py-1 font-bold">GSAP</span></div>
+<button id="topBtn" class="hoverable bg-white text-black px-4 py-2 font-black border-2 border-[#CCFF00]">↑ TOP</button>
+</footer>
+<div id="matrix" class="fixed inset-0 pointer-events-none z-[8500] hidden overflow-hidden text-green-400 text-xs font-mono opacity-80"></div>
+<script>
+gsap.registerPlugin(ScrollTrigger);
+// PRELOADER
+let pv=0; const ln=document.getElementById('load-num'), lb=document.getElementById('load-bar');
+const li=setInterval(()=>{pv+=Math.random()*14; if(pv>=100){pv=100;clearInterval(li); setTimeout(()=>{gsap.to('#preloader',{yPercent:-100,duration:.8,ease:'power4.inOut',onComplete:()=>document.getElementById('preloader').remove()}); heroIntro();},300);} ln.textContent=Math.floor(pv); lb.style.width=pv+'%';},90);
+// CURSOR + TRAIL
+const dot=document.getElementById('cDot'), ring=document.getElementById('cRing');
+let mx=innerWidth/2,my=innerHeight/2,rx=mx,ry=my;
+addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY; dot.style.transform=`translate(${mx-6}px,${my-6}px)`; spawnTrail(mx,my);});
+(function loop(){rx+=(mx-rx)*.16; ry+=(my-ry)*.16; ring.style.transform=`translate(${rx-ring.offsetWidth/2}px,${ry-ring.offsetHeight/2}px)`; requestAnimationFrame(loop);})();
+document.querySelectorAll('a,button,.hoverable,input').forEach(el=>{el.addEventListener('mouseenter',()=>{ring.classList.add('hovering'); blip(600);}); el.addEventListener('mouseleave',()=>ring.classList.remove('hovering'));});
+const tc=document.getElementById('trail'), tctx=tc.getContext('2d'); let parts=[];
+function sizeT(){tc.width=innerWidth;tc.height=innerHeight;} sizeT(); addEventListener('resize',sizeT);
+function spawnTrail(x,y){parts.push({x,y,vx:(Math.random()-.5)*3,vy:(Math.random()-.5)*3-1,life:1,c:Math.random()>.5?'#CCFF00':'#FF00E5',s:Math.random()*5+2}); if(parts.length>350)parts.shift();}
+(function drawT(){tctx.clearRect(0,0,tc.width,tc.height); parts=parts.filter(p=>p.life>0); parts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=.05;p.life-=.02; tctx.globalAlpha=Math.max(p.life,0); tctx.fillStyle=p.c; tctx.fillRect(p.x,p.y,p.s,p.s);}); tctx.globalAlpha=1; requestAnimationFrame(drawT);})();
+// BG STARS
+const bg=document.getElementById('bg-stars'), bctx=bg.getContext('2d'); let stars=[];
+function sizeB(){bg.width=innerWidth;bg.height=innerHeight; stars=Array.from({length:140},()=>({x:Math.random()*bg.width,y:Math.random()*bg.height,z:Math.random()*1.5+.3,r:Math.random()*1.8+.4}));} sizeB(); addEventListener('resize',sizeB);
+(function drawB(){bctx.fillStyle='#0d0d0d'; bctx.fillRect(0,0,bg.width,bg.height); const t=Date.now()/1000; stars.forEach(s=>{s.y+=s.z*.4; if(s.y>bg.height)s.y=0; const tw=.4+.6*Math.abs(Math.sin(t*2+s.x)); bctx.fillStyle=s.z>1?'#CCFF00':'#ffffff'; bctx.globalAlpha=tw*.8; bctx.beginPath(); bctx.arc(s.x,s.y,s.r,0,7); bctx.fill();}); bctx.globalAlpha=.12; bctx.strokeStyle='#CCFF00'; for(let x=0;x<bg.width;x+=44){bctx.beginPath();bctx.moveTo(x,0);bctx.lineTo(x,bg.height);bctx.stroke();} for(let y=0;y<bg.height;y+=44){bctx.beginPath();bctx.moveTo(0,y);bctx.lineTo(bg.width,y);bctx.stroke();} bctx.globalAlpha=1; requestAnimationFrame(drawB);})();
+// SOUND (WebAudio synth)
+let audioOn=false, actx=null;
+function blip(f=440,d=.06){ if(!audioOn) return; try{ actx=actx||new (window.AudioContext||window.webkitAudioContext)(); const o=actx.createOscillator(), g=actx.createGain(); o.type='square'; o.frequency.value=f+Math.random()*200; g.gain.value=.04; o.connect(g); g.connect(actx.destination); o.start(); g.gain.exponentialRampToValueAtTime(.0001,actx.currentTime+d); o.stop(actx.currentTime+d);}catch(e){} }
+document.getElementById('soundBtn').onclick=e=>{audioOn=!audioOn; e.target.textContent='SOUND:'+(audioOn?'ON':'OFF'); blip(880,.15); explode(e.clientX,e.clientY);};
+document.getElementById('psychoBtn').onclick=e=>{document.body.classList.toggle('psycho'); blip(200,.3); explode(e.clientX,e.clientY);};
+// TYPING
+const lines=['Backend developer in training_','The world is yours_','Python > excuses_','from KZ with rage_']; let li2=0,ci=0,del=false;
+(function type(){const el=document.getElementById('typing'); const cur=lines[li2]; el.textContent=cur.slice(0,ci); if(!del){ci++; if(ci>cur.length){del=true; setTimeout(type,1100); return;}} else {ci--; if(ci===0){del=false; li2=(li2+1)%lines.length;}} setTimeout(type,del?30:60);})();
+// HERO INTRO + SCROLL
+function heroIntro(){gsap.from('#hero h1',{y:120,opacity:0,duration:1,ease:'power4.out'}); gsap.from('#hero .btn-magnet',{scale:0,duration:.7,stagger:.1,ease:'back.out(2)'}); document.querySelectorAll('.counter').forEach(c=>{gsap.fromTo(c,{textContent:0},{textContent:+c.dataset.to,duration:1.5,snap:{textContent:1},onUpdate:function(){c.textContent=Math.floor(+c.textContent)}});});}
+gsap.utils.toArray('.reveal').forEach(el=>{gsap.to(el,{opacity:1,y:0,duration:.8,ease:'power3.out',scrollTrigger:{trigger:el,start:'top 88%'}});});
+addEventListener('scroll',()=>{const h=document.documentElement; document.getElementById('progress').style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';},{passive:true});
+// MAGNETIC BUTTONS
+document.querySelectorAll('.btn-magnet').forEach(b=>{b.addEventListener('mousemove',e=>{const r=b.getBoundingClientRect(); const x=e.clientX-r.left-r.width/2, y=e.clientY-r.top-r.height/2; b.style.transform=`translate(${x*.25}px,${y*.25}px)`;}); b.addEventListener('mouseleave',()=>b.style.transform='');});
+// 3D TILT
+document.querySelectorAll('.card-3d').forEach(card=>{card.addEventListener('mousemove',e=>{const r=card.getBoundingClientRect(); const x=(e.clientX-r.left)/r.width-.5, y=(e.clientY-r.top)/r.height-.5; card.style.transform=`perspective(800px) rotateY(${x*14}deg) rotateX(${-y*14}deg) scale(1.02)`;}); card.addEventListener('mouseleave',()=>card.style.transform='');});
+// EXPLOSION SHARDS
+function explode(x,y,n=26){const colors=['#CCFF00','#FF00E5','#00F0FF','#fff','#000']; for(let i=0;i<n;i++){const s=document.createElement('div'); s.className='shard'; const sz=Math.random()*14+6; s.style.cssText=`left:${x}px;top:${y}px;width:${sz}px;height:${sz}px;background:${colors[i%colors.length]};border:2px solid #000;`; document.body.appendChild(s); const a=Math.random()*Math.PI*2, v=Math.random()*420+120; gsap.to(s,{x:Math.cos(a)*v,y:Math.sin(a)*v-120,rotation:Math.random()*720-360,opacity:0,duration:.9+Math.random()*.6,ease:'power2.out',onComplete:()=>s.remove()});} blip(150+Math.random()*500,.12);}
+document.addEventListener('click',e=>{ if(e.target.closest('#term-in'))return; explode(e.clientX,e.clientY,14);});
+document.querySelectorAll('.stack-card').forEach(c=>c.addEventListener('click',e=>{explode(e.clientX,e.clientY,40); c.classList.add('jitter'); setTimeout(()=>c.classList.remove('jitter'),400); blip(900,.2);}));
+document.getElementById('lab-floor').addEventListener('click',e=>explode(e.clientX,e.clientY,50));
+// DRAG PROJECTS
+document.querySelectorAll('.draggable').forEach(el=>{let sx,sy,ox,oy,drag=false; el.addEventListener('pointerdown',e=>{if(e.target.tagName==='A')return; drag=true; sx=e.clientX; sy=e.clientY; const r=el.getBoundingClientRect(); ox=r.left; oy=r.top; el.setPointerCapture(e.pointerId); el.style.position='relative'; el.style.zIndex=5000;}); el.addEventListener('pointermove',e=>{if(!drag)return; el.style.left=(e.clientX-sx)+'px'; el.style.top=(e.clientY-sy)+'px'; el.style.transform='rotate(3deg) scale(1.03)';}); el.addEventListener('pointerup',e=>{if(!drag)return; drag=false; el.style.transform=''; gsap.fromTo(el,{scale:1.05},{scale:1,duration:.4,ease:'elastic.out(1,.4)'}); explode(e.clientX,e.clientY,20);});});
+document.getElementById('spawnBtn').onclick=e=>{const z=document.getElementById('proj-zone'); const c=z.children[0].cloneNode(true); c.querySelector('h3').textContent='CLONE-'+Math.floor(Math.random()*999); c.classList.add('draggable'); z.appendChild(c); explode(e.clientX,e.clientY,40); location.hash='#projects';};
+// CHAOS BUTTONS
+document.querySelectorAll('.chaos').forEach(b=>b.onclick=e=>{const k=b.dataset.chaos; blip(300,.2);
+if(k==='burst'){explode(innerWidth/2,innerHeight/2,120);}
+if(k==='rain'){for(let i=0;i<40;i++){setTimeout(()=>explode(Math.random()*innerWidth,0,8),i*60);}}
+if(k==='shake'){gsap.fromTo('body',{x:-14},{x:14,duration:.05,repeat:24,yoyo:true,clearProps:'x'});}
+if(k==='invert'){document.body.style.filter=document.body.style.filter?'':'invert(1) hue-rotate(180deg)'; setTimeout(()=>document.body.style.filter='',1200);}
+if(k==='matrix'){matrixMode();}});
+let matrixOn=false;
+function matrixMode(){const m=document.getElementById('matrix'); matrixOn=!matrixOn; m.classList.toggle('hidden',!matrixOn); if(!matrixOn){m.innerHTML='';return;} const chars='01ハ1CHAN<>/\\|'; let html=''; for(let i=0;i<60;i++){html+=`<span style="position:absolute;left:${Math.random()*100}%;top:${Math.random()*100}%;animation:fall ${1+Math.random()*2}s linear infinite">${Array.from({length:14},()=>chars[Math.floor(Math.random()*chars.length)]).join('<br>')}</span>`;} m.innerHTML=html; const st=document.createElement('style'); st.textContent='@keyframes fall{to{transform:translateY(40vh)}}'; document.head.appendChild(st);}
+// TERMINAL
+const tin=document.getElementById('term-in'), tlog=document.getElementById('term-log');
+tin.addEventListener('keydown',e=>{if(e.key!=='Enter')return; const v=tin.value.trim().toLowerCase(); tin.value=''; const d=document.createElement('div'); d.innerHTML=`<span class="text-[#CCFF00]">➜ ~</span> ${v||''}`; tlog.appendChild(d); const r=document.createElement('div'); r.className='text-white/80';
+if(v==='help')r.textContent='cmds: whoami | stack | projects | kz | hire-me | clear | rm -rf fears';
+else if(v==='whoami')r.textContent='h1chan / eyephoria — backend apprentice, KZ, beginner→dangerous.';
+else if(v==='stack')r.innerHTML='Python 65% • SQL 55% • HTML 80% • CSS 78% • JS 60% • Git 70%';
+else if(v==='projects')r.innerHTML='1) Sugar-Rush — bakery (live) 2) Sushi-Rush — fresh 3) h1chan — readme';
+else if(v==='kz')r.textContent='Привет из Казахстана! Алматы? Астана? — пиши на GitHub.';
+else if(v==='sudo hire-me')r.innerHTML='<b class="text-[#CCFF00]">[ACCESS GRANTED]</b> → <a class="underline" href="https://github.com/h1chan" target="_blank">github.com/h1chan</a> — жми HIRE!';
+else if(v==='clear'){tlog.innerHTML='';return;}
+else if(v==='rm -rf fears'){r.textContent='fears deleted. THE WORLD IS YOURS.'; explode(innerWidth/2,300,80);}
+else if(!v)return; else r.textContent=`command not found: ${v} — try help`;
+tlog.appendChild(r); blip(500,.08);});
+document.getElementById('topBtn').onclick=()=>scrollTo({top:0,behavior:'smooth'});
+</script>
+</body>
+</html>
