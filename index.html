@@ -376,10 +376,10 @@ var dust=new THREE.Points(pg2,new THREE.PointsMaterial({color:0xccff00,size:.07,
 var grid=new THREE.GridHelper(60,44,0xccff00,0x1e3a00); grid.position.y=-3.4; grid.material.transparent=true; grid.material.opacity=.32; scene.add(grid);
 /* side accent rock — parked right of the headline, never over it */
 var rock=new THREE.Mesh(new THREE.IcosahedronGeometry(1.15,1),new THREE.MeshBasicMaterial({color:0xff00e5,wireframe:true,transparent:true,opacity:.5}));
-rock.position.set(3.2,1.4,-1.0); scene.add(rock);
+rock.position.set(2.5,0.6,-1.0); scene.add(rock);
 var rock2=new THREE.Mesh(new THREE.IcosahedronGeometry(1.7,0),new THREE.MeshBasicMaterial({color:0x00f0ff,wireframe:true,transparent:true,opacity:.2}));
 rock2.position.copy(rock.position); scene.add(rock2);
-function sizeGL(){ var h=canvas.parentElement; var w=h.clientWidth, hh=h.clientHeight; renderer.setSize(w,hh,false); camera.aspect=w/hh; camera.updateProjectionMatrix(); if(w<768){ rock.position.set(2.4,-2.6,-3); rock.scale.setScalar(.7); } else { rock.position.set(3.2,1.4,-1.0); rock.scale.setScalar(1); } rock2.position.copy(rock.position); rock2.scale.copy(rock.scale); rock.userData.by=rock.position.y; } sizeGL(); addEventListener('resize',sizeGL);
+function sizeGL(){ var h=canvas.parentElement; var w=h.clientWidth, hh=h.clientHeight; renderer.setSize(w,hh,false); camera.aspect=w/hh; camera.updateProjectionMatrix(); if(w<768){ rock.position.set(2.4,-2.6,-3); rock.scale.setScalar(.7); } else { rock.position.set(2.5,0.6,-1.0); rock.scale.setScalar(1); } rock2.position.copy(rock.position); rock2.scale.copy(rock.scale); rock.userData.by=rock.position.y; } sizeGL(); addEventListener('resize',sizeGL);
 var tmx=0,tmy=0; addEventListener('mousemove',function(e){ tmx=(e.clientX/innerWidth-.5); tmy=(e.clientY/innerHeight-.5); },{passive:true});
 var reduce=window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 var t0=Date.now()/1000;
